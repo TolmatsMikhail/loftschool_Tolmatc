@@ -3,10 +3,10 @@ module.exports = function(config) {
         basePath: '',
         frameworks: ['mocha'],
         files: [
-            'test/**/*.js'
+            'hw3/test/**/*.js'
         ],
         preprocessors: {
-            'test/**/*.js': ['webpack', 'sourcemap'],
+            'hw3/test/**/*.js': ['webpack', 'sourcemap'],
         },
         webpack: require('./webpack.config.test'),
         webpackMiddleware: {
