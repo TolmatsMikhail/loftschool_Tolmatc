@@ -37,9 +37,11 @@ function map(array, fn) {
 		throw new Error('fn is not a function')
 	}
 
+	var a;
+
 	var array2 = [];
 	for(var i = 0; i < array.length; i++){
-		var a = fn(array[i], i, array);
+		a = fn(array[i], i, array);
 		array2.push(a);
 	}
 	return array2;
@@ -106,8 +108,12 @@ function hasProperty(obj, prop) {
 	Object.keys возвращает как раз массив с перечисляемыми свойствами. Удача!!!
  */
 function getEnumProps(obj) {
-	var keys = Object.keys(obj);
-	return keys;
+	var arr = [];
+	for(var key in obj){
+		arr.push(key);
+	}
+	
+	return arr;
 }
 
 /*
