@@ -7,8 +7,8 @@ import {
     findError,
     deleteTextNodes,
     deleteTextNodesRecursive,
-    collectDOMStat,
-    observeChildNodes
+    // collectDOMStat,
+    // observeChildNodes
 } from '../src/index';
 
 describe('ДЗ 4 - Работа с DOM', () => {
