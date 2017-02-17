@@ -8,6 +8,7 @@
  */
 function createDivWithText(text) {
     var newDiv = document.createElement('div');
+    
     newDiv.innerHTML = text;
 
     return newDiv;
@@ -21,6 +22,7 @@ function createDivWithText(text) {
  */
 function createAWithHref(hrefValue) {
     var newLink = document.createElement('a');
+
     newLink.setAttribute('href', hrefValue);
 
     return newLink;
@@ -34,6 +36,7 @@ function createAWithHref(hrefValue) {
  */
 function prepend(what, where) {
     var allChild = where.childNodes;
+
     where.insertBefore(what, allChild[0]);
 }
 
@@ -52,19 +55,20 @@ function prepend(what, where) {
  * т.к. следующим соседом этих элементов является элемент с тегом P
  */
 function findAllPSiblings(where) {
-        if(!where){
-            throw new Error('Негде искать!');
-        }
-        var childrens = where.children;
+    if (!where) {
+        throw new Error('Негде искать!');
+    }
+    var childrens = where.children;
 
-        var arr = [];
+    var arr = [];
 
-        for(var key of childrens){
-            if(key.tagName == 'P'){
-                arr.push(key.previousElementSibling);
-            }
+    for (var key of childrens) {
+        if (key.tagName == 'P') {
+            arr.push(key.previousElementSibling);
         }
-        return arr;
+    }
+
+    return arr;
 }
 
 /** 5
@@ -100,8 +104,9 @@ function findError(where) {
  */
 function deleteTextNodes(where) {
     var arr = where.childNodes;
-    for(var key of arr){
-        if(key.nodeType == 3){
+
+    for (var key of arr) {
+        if (key.nodeType == 3) {
             where.removeChild(key);
         }
     }
@@ -118,15 +123,18 @@ function deleteTextNodes(where) {
  * должно быть преобразовано в <span><div><b></b></div><p></p></span>
  */
 
-function deleteTextNodesRecursive(where){ 
+function deleteTextNodesRecursive(where) { 
     // передаем НОДУ!!! а не селектор
-    for(var i = 0; i < where.childNodes.length; i++){ 
-        var this_tested_element = where.childNodes[i]; //Берем первого ребенка в переданном элементе
-        if(this_tested_element.nodeType == 3){  // тип ноды ребенка == 3 ? => true
-            where.removeChild(this_tested_element); //тогда удалим этот элемент.
-            i--; //НО при удалении у нас изменилась ДЛИНА псевдомассива детей!! значит i должно остаться на месте!!
+    for (var i = 0; i < where.childNodes.length; i++) { 
+        var thisTestedElement = where.childNodes[i]; 
+
+        // Берем первого ребенка в переданном элементе
+        if (thisTestedElement.nodeType == 3) {  // тип ноды ребенка == 3 ? => true
+            where.removeChild(thisTestedElement); // тогда удалим этот элемент.
+            i--; // НО при удалении у нас изменилась ДЛИНА псевдомассива детей!! значит i должно остаться на месте!!
         } else {
-            deleteTextNodesRecursive(this_tested_element); // не текстовая нода. значит в ней может быть текстовая нода внутри! вот и рекурсия
+            deleteTextNodesRecursive(thisTestedElement); 
+            // не текстовая нода. значит в ней может быть текстовая нода внутри! вот и рекурсия
         } 
     } 
 }
@@ -153,9 +161,9 @@ function deleteTextNodesRecursive(where){
  *   texts: 3
  * }
  */
-function collectDOMStat(root) {
+// function collectDOMStat(root) {
 
-}
+// }
 
 /** 9
  * *** Со звездочкой ***
@@ -188,8 +196,8 @@ function collectDOMStat(root) {
  *   nodes: [div]
  * }
  */
-function observeChildNodes(where, fn) {
-}
+// function observeChildNodes(where, fn) {
+// }
 
 export {
     createDivWithText,
