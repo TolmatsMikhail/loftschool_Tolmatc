@@ -92,15 +92,18 @@ function followCreatedBlockPosition(e, target) {
 let addDivButton = homeworkContainer.querySelector('#addDiv');
 
 addDivButton.addEventListener('click', function() {
-    // создать новый div
-    let div = createDiv();
+    var isExistedDIV = document.querySelector('.draggable-div');
 
-    // добавить на страницу
-    homeworkContainer.appendChild(div);
-    // назначить обработчики событий мыши для реализации d&d
-    addListeners(div);
-    // можно не назначать обработчики событий каждому div в отдельности, а использовать делегирование
-    // или использовать HTML5 D&D - https://www.html5rocks.com/ru/tutorials/dnd/basics/
+// создать новый div, если не существует DIV с классом, который нас интересует
+    if (!isExistedDIV) {
+        // Создаем див. Мы проверили - его нет!
+        var div = createDiv();
+        
+        // Помещаем созданный див в контейнер. Этот код уже здесь был
+        homeworkContainer.appendChild(div);
+        // Добавляем обработчики на помещенный в homeworkContainer новый д
+        addListeners(div);
+    }       
 });
 
 export {
