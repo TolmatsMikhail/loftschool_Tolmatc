@@ -1,4 +1,4 @@
-/**
+/*
  * ДЗ 7.2 - Создать редактор cookie с возможностью фильтрации
  * ############### ТАБЛИЦА ЕСТЬ, УЖЕ БЫЛА. ЗАДАЧА НЕКОРРЕКТНА, т.к. КНОПКА! КАКАЯ РАЗНИЦА НА ЧТО ВЕШАТЬ ОРАБОТЧИК?
  * На странице должна быть таблица со списком имеющихся cookie:
@@ -81,9 +81,6 @@ function isMatching(full, chunk) {
  // Обработчик который будет СОЗДАВАТЬ строчки в таблице и записывать куки
 addButton.addEventListener('click', createCookieTr);
 function createCookieTr(name, value) {
-
-
-
 	// Введенные значения кук имени и значения
 	name = addNameInput.value;
 	value = addValueInput.value;
@@ -93,7 +90,8 @@ function createCookieTr(name, value) {
 		document.cookie = name + '=' + value;
 
 		return;
-	} else if (document.querySelectorAll('.cookie_name').length > 0) {
+	}
+	if (document.querySelectorAll('.cookie_name').length > 0) {
 		for(var key in document.querySelectorAll('.cookie_name')) {	
 			if(document.querySelectorAll('.cookie_name')[key].innerHTML != name) {
 				continue;
@@ -107,8 +105,6 @@ function createCookieTr(name, value) {
 	} 
 	listTable.appendChild(createTr(name,value));
 	document.cookie = name + '=' + value;
-	addNameInput.value = null;
-	addValueInput.value = null;
 }
 
 // Функция создания строчки таблицы
@@ -160,6 +156,7 @@ function deleteTableRow(e) {
 // ###################################  До сюда
 
 filterNameInput.addEventListener('keyup', function(e) {
+	
 	//Берем значение поля ввода
 	var filterInputValue = filterNameInput.value
 	// Берем куки в виде строчки. Будем искать совпадения
@@ -167,36 +164,41 @@ filterNameInput.addEventListener('keyup', function(e) {
 	// Берем значение имен и значений кук. Помним, что если стереть из таблицы, то сотрется и из кук.
 	var cokaNames = document.querySelectorAll('.cookie_name');
 	var cokaValues = document.querySelectorAll('.cookie_value');
-
 //CСУДЯ ПО ТЕСТАМ - УДАЛЯТЬСЯ ДОЛЖНО СОВСЕМ!! ПРОВЕРЯЕТСЯ ДЛИНА, НАХРЕН ТАК??
 // Просто скрыть - тесты не проходят
-
 	// Есть совпадения введенного значения в строчке кук? 
 	if(isMatching(cooka, filterInputValue)) {
-		for(var i = 0; i < cokaNames.length; i++) {
+		for (var i = 0; i < cokaNames.length; i++) {
 			// А совпадает ли введенное значение со значение какого-нибудь имени куки или значения?
-			if(!isMatching(cokaNames[i].innerHTML, filterInputValue) && !isMatching(cokaValues[i].innerHTML, filterInputValue)) {
-				// Не совпадает. скроем строчку таблицы
-				cokaNames[i].parentNode.style.display = 'none';
-			} else {
-				// совпадает. покажем строчку таблицы!
-				cokaNames[i].parentNode.style.display = 'table-row';
-			}
-		}
-
-	} else {
-		for(var i = 0; i < cokaNames.length; i++) {
-			cokaNames[i].parentNode.style.display = 'none';
+			if (!isMatching(cokaNames[i].innerHTML, filterInputValue) && !isMatching(cokaValues[i].innerHTML, filterInputValue)) {
+				// Не совпадает. удалим строчку таблицы
+				listTable.removeChild(cokaNames[i].parentNode);
+				// cokaNames[i].parentNode.style.display = 'none';
+			} 
+			// else {
+			// 	makeTable();
+			// }
 		}
 	}
+
+
+
 });
 
 // Будем заполнять табличку из document.cookie при загрузке страницы
-(function(){
+
+function makeTable(){
+	// Получаем массив имен, значений. Имена на четных местах, значения на нечетных. 
 	var x = document.cookie.split('=').join().split(';').join().split(',');
-	for(var i = 0; i < x.length; ) {
+	for (var i = 0; i < x.length; ) {
 		var k = i + 1;
-		listTable.appendChild(createTr(x[i], x[k]))
+		var z = 0;
+		if (listTable.children[z].children[0].innerHTML == filterNameInput.value) {
+			listTable.appendChild(createTr(x[i], x[k]));
+		}
+		
 		i = i + 2;
+		z = z + 1;
 	}
-}) ()
+}
+
