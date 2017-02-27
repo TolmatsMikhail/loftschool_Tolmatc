@@ -238,4 +238,6 @@ function makeTable(){
 	}
 }
 
+makeTable();
+
 
