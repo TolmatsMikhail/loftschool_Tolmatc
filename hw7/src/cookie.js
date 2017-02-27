@@ -85,6 +85,26 @@ function createCookieTr(name, value) {
 	name = addNameInput.value;
 	value = addValueInput.value;
 
+	var filter = filterNameInput.value;
+// Если фильтр задан и Не соответствует имени куки - не добавляем в таблицу.
+
+	if(filter) {
+		if(isMatching(name, filter) || isMatching(value,filter)) {
+			listTable.appendChild(createTr(name,value));
+			document.cookie = name + '=' + value;
+
+			return;
+		} else if (filter && !isMatching(name, filter)) {
+			document.cookie = name + '=' + value;
+
+			return;
+		}
+	}
+
+
+
+
+
 	if(document.querySelectorAll('.cookie_name').length == 0) {
 		listTable.appendChild(createTr(name,value));
 		document.cookie = name + '=' + value;
@@ -156,33 +176,7 @@ function deleteTableRow(e) {
 // ###################################  До сюда
 
 filterNameInput.addEventListener('keyup', function(e) {
-	
-	//Берем значение поля ввода
-	var filterInputValue = filterNameInput.value
-	// Берем куки в виде строчки. Будем искать совпадения
-	var cooka = document.cookie;
-	// Берем значение имен и значений кук. Помним, что если стереть из таблицы, то сотрется и из кук.
-	var cokaNames = document.querySelectorAll('.cookie_name');
-	var cokaValues = document.querySelectorAll('.cookie_value');
-//CСУДЯ ПО ТЕСТАМ - УДАЛЯТЬСЯ ДОЛЖНО СОВСЕМ!! ПРОВЕРЯЕТСЯ ДЛИНА, НАХРЕН ТАК??
-// Просто скрыть - тесты не проходят
-	// Есть совпадения введенного значения в строчке кук? 
-	if(isMatching(cooka, filterInputValue)) {
-		for (var i = 0; i < cokaNames.length; i++) {
-			// А совпадает ли введенное значение со значение какого-нибудь имени куки или значения?
-			if (!isMatching(cokaNames[i].innerHTML, filterInputValue) && !isMatching(cokaValues[i].innerHTML, filterInputValue)) {
-				// Не совпадает. удалим строчку таблицы
-				listTable.removeChild(cokaNames[i].parentNode);
-				// cokaNames[i].parentNode.style.display = 'none';
-			} 
-			// else {
-			// 	makeTable();
-			// }
-		}
-	}
-
-
-
+	makeTable();
 });
 
 // Будем заполнять табличку из document.cookie при загрузке страницы
@@ -190,15 +184,32 @@ filterNameInput.addEventListener('keyup', function(e) {
 function makeTable(){
 	// Получаем массив имен, значений. Имена на четных местах, значения на нечетных. 
 	var x = document.cookie.split('=').join().split(';').join().split(',');
+	var filterInputValue = filterNameInput.value;
+	listTable.innerHTML = '';
+
+	var name = addNameInput.value;
+	var value = addValueInput.value;
+
+
+
+// ????????????????
+	if(!filterInputValue) {
+		for(var z = 0; z < x.length; ) {
+			var p = i + 1;
+			listTable.appendChild(createTr(x[z], x[p]));
+			z = z + 2
+		}
+	}
+
 	for (var i = 0; i < x.length; ) {
+
 		var k = i + 1;
-		var z = 0;
-		if (listTable.children[z].children[0].innerHTML == filterNameInput.value) {
+
+		if(isMatching(x[i], filterInputValue) || isMatching(x[k], filterInputValue) ) {
 			listTable.appendChild(createTr(x[i], x[k]));
 		}
-		
 		i = i + 2;
-		z = z + 1;
 	}
 }
+
 
