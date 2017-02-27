@@ -91,7 +91,6 @@ function createCookieTr(name, value) {
 
 // Ф И Л Ь Т Р  __  З А Д А Н !!
 	if(filter) {
-
 		
 // Есть совпадение есть по фильтру ИЛИ значение, то заходим сюда
 		if(isMatching(name, filter) || isMatching(value,filter)) {
@@ -102,7 +101,6 @@ function createCookieTr(name, value) {
 
 			return;
 		} 
-
 
 // Если НЕТ совпадений по имени и фильтру
 		if (!isMatching(name, filter)) {
@@ -122,15 +120,7 @@ function createCookieTr(name, value) {
 				}
 			}	
 		}
-
-
-
-
 	}
-
-
-
-
 
 	if(document.querySelectorAll('.cookie_name').length == 0) {
 		listTable.appendChild(createTr(name,value));
