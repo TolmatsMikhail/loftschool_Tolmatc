@@ -86,19 +86,46 @@ function createCookieTr(name, value) {
 	value = addValueInput.value;
 
 	var filter = filterNameInput.value;
-// Если фильтр задан и Не соответствует имени куки - не добавляем в таблицу.
 
+	var cokasNames = document.querySelectorAll('.cookie_name');
+
+// Ф И Л Ь Т Р  __  З А Д А Н !!
 	if(filter) {
+
+		
+// Есть совпадение есть по фильтру ИЛИ значение, то заходим сюда
 		if(isMatching(name, filter) || isMatching(value,filter)) {
 			listTable.appendChild(createTr(name,value));
 			document.cookie = name + '=' + value;
 
-			return;
-		} else if (filter && !isMatching(name, filter)) {
-			document.cookie = name + '=' + value;
+			console.log('Есть совпадение по фильтру или по значению')
 
 			return;
+		} 
+
+
+// Если НЕТ совпадений по имени и фильтру
+		if (!isMatching(name, filter)) {
+			document.cookie = name + '=' + value;
+			console.log('Нет совпадений только по имени и фильтру')
+			return;
 		}
+
+		if(!isMatching(value, filter)) {
+			for(var prop in cokasNames) {
+				if(isMatching(cokasNames[prop].innerHTML, name) && !isMatching(cokasNames[prop].nextElementSibling.innerHTML, value)) {
+					var thisTr = cokasNames[prop].parentNode;
+					listTable.removeChild(thisTr);
+					cokasNames[prop].parentNode.style.backgroundColor = 'red';
+
+					return;
+				}
+			}	
+		}
+
+
+
+
 	}
 
 
@@ -123,8 +150,15 @@ function createCookieTr(name, value) {
 			}
 		}
 	} 
+
+
 	listTable.appendChild(createTr(name,value));
 	document.cookie = name + '=' + value;
+
+
+
+
+
 }
 
 // Функция создания строчки таблицы
@@ -199,6 +233,8 @@ function makeTable(){
 			listTable.appendChild(createTr(x[z], x[p]));
 			z = z + 2
 		}
+
+		return;
 	}
 
 	for (var i = 0; i < x.length; ) {

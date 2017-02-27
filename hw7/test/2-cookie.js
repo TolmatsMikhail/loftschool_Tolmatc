@@ -172,9 +172,6 @@ describe('ДЗ 7.2 - Cookie editor', () => {
             it('добавлять cookie в таблицу, только если имя cookie соответствует фильтру', () => {
                 let cookies;
 
-                //Что это вообще за условие?? 
-                // при чем тут вообще нахрен фильтр? Разве просто нельзя добавлять?
-
                 addNameInput.value = 'test-cookie-name-1';
                 addValueInput.value = 'test-cookie-value-1';
                 addButton.click();
