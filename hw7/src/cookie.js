@@ -219,7 +219,7 @@ function makeTable(){
 // ????????????????
 	if(!filterInputValue) {
 		for(var z = 0; z < x.length; ) {
-			var p = i + 1;
+			var p = z + 1;
 			listTable.appendChild(createTr(x[z], x[p]));
 			z = z + 2
 		}
