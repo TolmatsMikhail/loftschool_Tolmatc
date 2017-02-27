@@ -90,7 +90,7 @@ function createCookieTr(name, value) {
 	var cokasNames = document.querySelectorAll('.cookie_name');
 
 // Ф И Л Ь Т Р  __  З А Д А Н !!
-	if(filter) {
+	if(filter.length > 0) {
 		
 // Есть совпадение есть по фильтру ИЛИ значение, то заходим сюда
 		if(isMatching(name, filter) || isMatching(value,filter)) {
