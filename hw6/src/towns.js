@@ -67,11 +67,15 @@ loadTowns()
         if (value == '') {
             filterResult.innerHTML = '';
         } else {
+            var insideFilterResults = '';
+            
             for (var i = 0; i < a.length; i++) {
                 if (isMatching(a[i].name.trim(), value)) {
-                    filterResult.innerHTML += '<div>' + a[i].name + '</div>';
+                    insideFilterResults += '<div>' + a[i].name + '</div>';
                 }
             }
+
+            filterResult.innerHTML = insideFilterResults;
         }
     });
 
@@ -80,8 +84,8 @@ loadTowns()
         filterResult.innerHTML = null;
     })
 },
-function(error){
-	console.log(error)
+function(error) {
+    console.log(error)
 })
 /**
  * Функция должна проверять встречается ли подстрока chunk в строке full
