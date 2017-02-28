@@ -50,7 +50,7 @@ let listTable = homeworkContainer.querySelector('#list-table tbody');
  * @return {boolean}
  */
 function isMatching(full, chunk) {
-	if (chunk == null) {
+    if (chunk == null) {
         chunk = '';
     }
     if (full == null) {
@@ -60,7 +60,9 @@ function isMatching(full, chunk) {
     var fullS = full.toLowerCase();
 
     var chunkS = chunk.toLowerCase();
-//Совпадений нет? Пусть true. В дальнейшем нужно следить за тем, есть ли совпадение, возможно приравнивать его false
+
+// Совпадений нет? Пусть true. В дальнейшем нужно следить за тем, есть ли совпадение, 
+// возможно приравнивать его false
     if (fullS.indexOf(chunkS) > -1) {
         return true;
     }
@@ -78,150 +80,164 @@ function isMatching(full, chunk) {
  // Обработчик который будет СОЗДАВАТЬ строчки в таблице и записывать куки
 addButton.addEventListener('click', createCookieTr);
 function createCookieTr(name, value) {
-	// Введенные значения кук имени и значения
-	name = addNameInput.value;
-	value = addValueInput.value;
-	// Значение поля фильтра
-	var filter = filterNameInput.value;
-	// Все имена в строчках таблицы. 
-	var cokasNames = document.querySelectorAll('.cookie_name');
+// Введенные значения кук имени и значения
+    name = addNameInput.value;
+    value = addValueInput.value;
+// Значение поля фильтра
+    var filter = filterNameInput.value;
+// Все имена в строчках таблицы. 
+    var cokasNames = document.querySelectorAll('.cookie_name');
 
-	// Если фильтр задан. Длина значения больше нуля.
-	if(filter.length > 0) {
+// Если фильтр задан. Длина значения больше нуля.
+    if (filter.length > 0) {
 
-		// Совпадений значений фильтра и значения нет? Удалим значение из таблицы(при попытке добавить строчку таблицы). А куку - запишем!
-		if(isMatching(value, filter) == false) {
-			for(var prop in cokasNames) {
-				if(isMatching(cokasNames[prop].innerHTML, name) && !isMatching(cokasNames[prop].nextElementSibling.innerHTML, value)) {
-					var thisTr = cokasNames[prop].parentNode;
-					listTable.removeChild(thisTr);
-					cokasNames[prop].parentNode.style.backgroundColor = 'red';
-					document.cookie = name + '=' + value;
+        // Совпадений значений фильтра и значения нет? 
+        // Удалим значение из таблицы(при попытке добавить строчку таблицы)
+        // А куку - запишем!
+        if (isMatching(value, filter) == false) {
+            for (var prop in cokasNames) {
+                if (isMatching(cokasNames[prop].innerHTML, name) && !isMatching(cokasNames[prop].nextElementSibling.innerHTML, value)) {
+                    var thisTr = cokasNames[prop].parentNode;
 
-					return;
-				}
-			}	
-		}
-	// Есть ли совпадение по Имя/Фильтр или Значение/Фильтр, то заходим сюда
-		if(isMatching(name, filter) || isMatching(value,filter)) {
-			listTable.appendChild(createTr(name,value));
-			document.cookie = name + '=' + value;
+                    listTable.removeChild(thisTr);
+                    cokasNames[prop].parentNode.style.backgroundColor = 'red';
+                    document.cookie = name + '=' + value;
 
-			return;
-		} 
+                    return;
+                }
+            }
+        }
+        // Есть ли совпадение по Имя/Фильтр или Значение/Фильтр, то заходим сюда
+        if (isMatching(name, filter) || isMatching(value, filter)) {
+            listTable.appendChild(createTr(name, value));
+            document.cookie = name + '=' + value;
 
-	// Нет совпадений по Имя/Фильтр? В таблицу не добавляем, а куку запишем. 
-		if (!isMatching(name, filter)) {
-			document.cookie = name + '=' + value;
-			return;
-		}
-	}
-	// Фильтр не задан и в таблице пусто - просто добавляем строку таблицы и пишем куку.
-	if(document.querySelectorAll('.cookie_name').length == 0) {
-		listTable.appendChild(createTr(name,value));
-		document.cookie = name + '=' + value;
+            return;
+        } 
 
-		return;
-	}
-	// В таблице уже что-то есть. Проверяем не совпадает ли то, что хотим добавить с уже имеющимся в таблице именем куки.
-	// Потому что если имя уже есть - надо переписать значение при попытке добавить куку, чтобы не было дублей. 
-	if (document.querySelectorAll('.cookie_name').length > 0) {
-		for(var key in document.querySelectorAll('.cookie_name')) {	
-			if(document.querySelectorAll('.cookie_name')[key].innerHTML != name) {
-				continue;
-			} else if(document.querySelectorAll('.cookie_name')[key].innerHTML == name) {
-				document.querySelectorAll('.cookie_name')[key].nextElementSibling.innerHTML = value;
-				document.cookie = name + '=' + value;
+    // Нет совпадений по Имя/Фильтр? В таблицу не добавляем, а куку запишем. 
+        if (!isMatching(name, filter)) {
+            document.cookie = name + '=' + value;
 
-				return;
-			}
-		}
-	} 
-	listTable.appendChild(createTr(name,value));
-	document.cookie = name + '=' + value;
+            return;
+        }
+    }
+    // Фильтр не задан и в таблице пусто - просто добавляем строку таблицы и пишем куку.
+    if (document.querySelectorAll('.cookie_name').length == 0) {
+        listTable.appendChild(createTr(name, value));
+        document.cookie = name + '=' + value;
+
+        return;
+    }
+    /* В таблице уже что-то есть. Проверяем не совпадает ли то, 
+    что хотим добавить с уже имеющимся в таблице именем куки.
+    Потому что если имя уже есть - надо переписать значение 
+    при попытке добавить куку, чтобы не было дублей. */
+    if (document.querySelectorAll('.cookie_name').length > 0) {
+        for (var key in document.querySelectorAll('.cookie_name')) {    
+            if (document.querySelectorAll('.cookie_name')[key].innerHTML != name) {
+                continue;
+            } else if (document.querySelectorAll('.cookie_name')[key].innerHTML == name) {
+                document.querySelectorAll('.cookie_name')[key].nextElementSibling.innerHTML = value;
+                document.cookie = name + '=' + value;
+
+                return;
+            }
+        }
+    } 
+    listTable.appendChild(createTr(name, value));
+    document.cookie = name + '=' + value;
 }
 
-// Функция создания строчки таблицы. Возвращает строчку. Значит мы ее можем вставить в другую функцию.. и результатом будет создание строки
+/* Функция создания строчки таблицы. 
+Возвращает строчку. Значит мы ее можем вставить 
+в другую функцию.. и результатом будет создание строки*/
 function createTr(name, value) {
-	// Объявим строку
-	var tr = document.createElement('tr');
-	// Объявми ячейки. Их будет три. Каждой зададим класс, чтобы дальше можно было к ним обращаться. 
-	var td1 = document.createElement('td');
-	td1.setAttribute('class', 'cookie_name');
-	var td2 = document.createElement('td');
-	td2.setAttribute('class', 'cookie_value');
-	var td3 = document.createElement('td');
-	td3.setAttribute('class', 'deleteCookies');
-	// Поместим внутрь созданных ячеек значения (в будущем) имени и значения кук. В соответствующие. 
-	td1.innerHTML = name;
-	td2.innerHTML = value;
-	// А вот этот момент мне не понятен. Почему именно BUTTON? Почему нельзя повесить обработчик не на кнопку, а на класс? 
-	// Какая разница на что вешать-то, а ???
-	var button = document.createElement('button');
-	button.innerHTML = 'удалить';
-	button.classList.add('deleteCookies');
-	// Поместим в строчку все созданные ячейки.
-	td3.appendChild(button);
-	tr.appendChild(td1);
-	tr.appendChild(td2);
-	tr.appendChild(td3);
+    // Объявим строку
+    var tr = document.createElement('tr');
+    // Объявми ячейки. Их будет три. Каждой зададим класс, чтобы дальше можно было к ним обращаться. 
+    var td1 = document.createElement('td');
 
-	// Ну и вернём
-	return tr;
+    td1.setAttribute('class', 'cookie_name');
+    var td2 = document.createElement('td');
+
+    td2.setAttribute('class', 'cookie_value');
+    var td3 = document.createElement('td');
+
+    td3.setAttribute('class', 'deleteCookies');
+    // Поместим внутрь созданных ячеек значения (в будущем) имени и значения кук. В соответствующие. 
+    td1.innerHTML = name;
+    td2.innerHTML = value;
+    /* А вот этот момент мне не понятен. 
+    Почему именно BUTTON? Почему нельзя повесить 
+    обработчик не на кнопку, а на класс? 
+    Какая разница на что вешать-то, а ??? */
+    var button = document.createElement('button');
+
+    button.innerHTML = 'удалить';
+    button.classList.add('deleteCookies');
+    // Поместим в строчку все созданные ячейки.
+    td3.appendChild(button);
+    tr.appendChild(td1);
+    tr.appendChild(td2);
+    tr.appendChild(td3);
+
+    // Ну и вернём
+    return tr;
 }
 
 // Обработчик, удаляющий строчку и куку из таблицы
 homeworkContainer.addEventListener('click', deleteTableRow);
 // Функция, удаляющая куку из таблицы и строчку из таблицы 
 function deleteTableRow(e) {
-	if(e.target.classList.contains('deleteCookies')) {
-		listTable.removeChild(e.target.parentNode.parentNode);
-		// Имя куки? берем из первой колонки
-		var cookieNameToDelete = e.target.parentNode.parentNode.children[0].innerHTML;
-		// Значение куки? берем из второй колонки
-		var cookieValueToDelete = e.target.parentNode.parentNode.children[1].innerHTML;
-		// Заставляем куку "протухнуть" путем установки даты начала эпохи unix
-		document.cookie = cookieNameToDelete + '=' + cookieValueToDelete + ';expires=' + new Date(0);
-		// на всякий случай, если удалим все строчки из таблицы - пусть поля input будут пустые
-		// if(document.querySelectorAll('.cookie_name').length == 0) {
-		// 		addNameInput.value = null;
-		// 		addValueInput.value = null;
-		// }		
-	} 
+    if (e.target.classList.contains('deleteCookies')) {
+        listTable.removeChild(e.target.parentNode.parentNode);
+        // Имя куки? берем из первой колонки
+        var cookieNameToDelete = e.target.parentNode.parentNode.children[0].innerHTML;
+        // Значение куки? берем из второй колонки
+        var cookieValueToDelete = e.target.parentNode.parentNode.children[1].innerHTML;
+
+        // Заставляем куку "протухнуть" путем установки даты начала эпохи unix
+        document.cookie = cookieNameToDelete + '=' + cookieValueToDelete + ';expires=' + new Date(0);
+        // на всякий случай, если удалим все строчки из таблицы - пусть поля input будут пустые
+        // if (document.querySelectorAll('.cookie_name').length == 0) {
+        //         addNameInput.value = null;
+        //         addValueInput.value = null;
+        // }        
+    } 
 }
 
-filterNameInput.addEventListener('keyup', function(e) {
-	makeTable();
+filterNameInput.addEventListener('keyup', function() {
+    makeTable();
 });
 
 // Будем заполнять табличку из document.cookie при загрузке страницы
-function makeTable(){
-	// Получаем массив имен, значений. Имена на четных местах, значения на нечетных. 
-	var x = document.cookie.split('=').join().split(';').join().split(',');
-	var filterInputValue = filterNameInput.value;
-	listTable.innerHTML = '';
-	var name = addNameInput.value;
-	var value = addValueInput.value;
-	if(!filterInputValue) {
-		for(var z = 0; z < x.length; ) {
-			var p = z + 1;
-			listTable.appendChild(createTr(x[z], x[p]));
-			z = z + 2
-		}
+function makeTable() {
+    // Получаем массив имен, значений. Имена на четных местах, значения на нечетных. 
+    var x = document.cookie.split('=').join().split(';').join().split(',');
+    var filterInputValue = filterNameInput.value;
 
-		return;
-	}
-	for (var i = 0; i < x.length; ) {
+    listTable.innerHTML = '';
 
-		var k = i + 1;
+    if (!filterInputValue) {
+        for (var z = 0; z < x.length; ) {
+            var p = z + 1;
 
-		if(isMatching(x[i], filterInputValue) || isMatching(x[k], filterInputValue) ) {
-			listTable.appendChild(createTr(x[i], x[k]));
-		}
-		i = i + 2;
-	}
+            listTable.appendChild(createTr(x[z], x[p]));
+            z = z + 2
+        }
+
+        return;
+    }
+    for (var i = 0; i < x.length; ) {
+
+        var k = i + 1;
+
+        if (isMatching(x[i], filterInputValue) || isMatching(x[k], filterInputValue) ) {
+            listTable.appendChild(createTr(x[i], x[k]));
+        }
+        i = i + 2;
+    }
 }
 // А вот если куки какие-то в браузере есть, то заполним таблицу этими данными
 makeTable();
-
-
