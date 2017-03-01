@@ -4,7 +4,7 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "codestyle": "eslint ./hw5/**",
+    "codestyle": "eslint ./hw6/**",
     "travis": "npm run codestyle && npm test",
     "build": "webpack --progress --colors",
     "watch": "webpack-dev-server --progress --colors --open",
