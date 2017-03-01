@@ -2,25 +2,164 @@ body {
     font-family: Helvetica, sans-serif;
     font-size: 16px;
 }
+* {
+    box-sizing: border-box;
+}
 
 #friends {
+    display: -webkit-flex;
+    display: -moz-flex;
+    display: -ms-flex;
+    display: -o-flex;
     display: flex;
-    flex-wrap: wrap;
-}
+    flex-wrap: nowrap;
+    flex-direction: row;
 
-.friend {
-    margin: 20px;
-    width: 150px;
-    height: 150px;
-    text-align: center;
 }
-
-.friend .photo {
-    width: 50px;
-    height: 50px;
-    border-radius: 50%;
+.friends_item {
+    width: 50%;
 }
-
-.name {
+.friends_item_left, .friends_item_right {
+    height: 345px;
+    overflow-y: scroll;
+    padding: 15px 10px;
+    padding-top: 0;
+}
+.friends_item_left {
+    border-right: 1px solid #f0f0f0;
+}
+.friends_item__title{
+    margin: 0;
+    padding: 0;
+    font-size: 14px;
+    line-height: 14px;
+    padding: 15px 0 5px;
+    border-bottom: 1px solid #f0f0f0;
+}
+.img_logo{
+    display: block;
+    margin: 40px auto 0;
+    width: 300px;
+}
+.layout {
+    background-color: rgba(0,0,0,0.5);
+    position: absolute;
+    top: 50px;
+    left: 0;
+    bottom: 0;
+    right: 0;
+    display: block;
+}
+.layout_container {
+    width: 100%;
+    max-width: 620px;
+    height: 490px;
+    background-color: #fff;
+    margin: 260px auto 0;
+    border-radius: 10px;
+    overflow: hidden;
+    position: relative;
+}
+.layout_container_top {
+    padding: 16px 15px 12px; 
+    background-color: #ff8663;
+    color: #fff;
+    font-size: 16px;
     font-weight: bold;
+}
+.layout_container_close {
+    float: right;
+    cursor: pointer;
+}
+/*.hidden {
+    display: none;
+}*/
+.friends_item_search {
+    background-color: #f0f0f0;
+    padding: 10px;
+    position: relative;
+}
+.friends_item_search  input {
+    display: block;
+    border-radius: 10px;
+    border: none;
+    outline: none;
+    width: 100%;
+    font-size: 12px;
+    line-height: 14px;
+    padding: 8px 29px;
+}
+.friends_item_search_left {
+    padding-left: 15px;
+}
+.friends_item_sear15_right {
+    padding-right: 14px;
+}
+.img_loupe{
+    position: absolute;
+    top: 16px;
+    left: 24px;
+}
+.layout_container_bottom{
+    background-color: #f0f0f0;
+    padding: 10px 7px;
+    text-align: right;
+    position: absolute;
+    bottom: 0;
+    width: 100%;
+    left: 0;
+}
+.layout_container_bottom_save {
+    background-color: #ff8663;
+    font-size: 14px;
+    line-height: 14px;
+    padding: 9px 0;
+    text-align: center;
+    color: #ffffff;
+    border: none;
+    outline: none;
+    border-radius: 10px;
+    width: 87px;
+    cursor: pointer;
+}
+.one_friend{
+    padding: 9px 6px; 
+    font-size: 0;
+    cursor: pointer;
+}
+.one_friend:active {
+    background-color: #f0f0f0;
+    cursor: pointer;
+}
+.one_friend_item{
+    display: inline-block;
+    vertical-align: top;
+}
+.one_friend_item_image{
+    width: 44px;
+    height: 44px;
+    border-radius: 50%;
+    border: 1px solid red;
+    overflow: hidden; 
+}
+.one_friend_item_image > img {
+    width: 100%;
+    height: 100%;
+}
+.one_friend_item_name {
+    font-size: 12px;
+    line-height: 44px;
+    color: #4f4f4f;
+    padding: 0 3px;
+    padding-right: 20px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis; 
+    width: 195px;
+}
+.one_friend_item_plus{
+    padding-top: 13px;
+}
+.friends_item_right_inner{
+    min-height: 290px;
 }

@@ -1,14 +1,13 @@
 {{#each friends}}
-    <div class="friend">
-        <img class="photo" src="{{photo_100}}">
-        <div class="name">{{first_name}} {{last_name}}</div>
-        <div class="location">
-            {{#if country}}
-                <div class="country">{{country.title}}</div>
-            {{/if}}
-            {{#if city}}
-                <div class="city">{{city.title}}</div>
-            {{/if}}
+    <div class="one_friend">
+        <div class="one_friend_item one_friend_item_image">
+            <img class="photo" src="{{photo_100}}">
+        </div>
+        <div class="one_friend_item one_friend_item_name">
+            {{first_name}} {{last_name}}
+        </div>
+        <div class="one_friend_item one_friend_item_plus">
+            <img src="img/plus.png" alt="" class="one_friend_item_plus_image">
         </div>
     </div>
 {{/each}}
