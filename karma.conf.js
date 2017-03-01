@@ -3,10 +3,10 @@ module.exports = function(config) {
         basePath: '',
         frameworks: ['mocha'],
         files: [
-            'hw5/test/**/*.js'
+            'hw7/test/**/*.js'
         ],
         preprocessors: {
-            'hw5/test/**/*.js': ['webpack', 'sourcemap'],
+            'hw7/test/**/*.js': ['webpack', 'sourcemap'],
         },
         webpack: require('./webpack.config.test'),
         webpackMiddleware: {
@@ -14,14 +14,14 @@ module.exports = function(config) {
         },
         reporters: ['mocha'],
         port: 9876,
-        browsers: ['Firefox'],
+        browsers: ['Chrome'],
         captureTimeout: 60000,
-        singleRun: true,
+        singleRun: false,
         plugins: [
             require('karma-mocha'),
             require('karma-webpack'),
             require('karma-mocha-reporter'),
-            require('karma-firefox-launcher'),
+            require('karma-chrome-launcher'),
             require('karma-sourcemap-loader')
         ]
     });

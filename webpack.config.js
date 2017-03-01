@@ -14,8 +14,7 @@ loaders.push({
 
 module.exports = {
     entry: {
-        main: './hw5/src/index.js',
-        dnd: './hw5/src/dnd.js'
+        main: 'hw7/src/index.js',
     },
     output: {
         filename: '[chunkhash].js',
@@ -34,15 +33,10 @@ module.exports = {
         }),
         new ExtractTextPlugin('styles.css'),
         new HtmlPlugin({
-            title: 'Main Homework',
+            title: 'friends editor',
             template: 'index.hbs',
+            filename: 'index.html',
             chunks: ['main']
-        }),
-        new HtmlPlugin({
-            title: 'Div Drag And Drop',
-            template: 'hw5/dnd.hbs',
-            filename: 'dnd.html',
-            chunks: ['dnd']
         }),
         new CleanWebpackPlugin(['dist'])
     ]

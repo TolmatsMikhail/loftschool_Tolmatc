@@ -4,7 +4,7 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "codestyle": "eslint ./hw5/**",
+    "codestyle": "eslint hw7",
     "travis": "npm run codestyle && npm test",
     "build": "webpack --progress --colors",
     "watch": "webpack-dev-server --progress --colors --open",
@@ -31,6 +31,7 @@
   "devDependencies": {
     "eslint": "^3.13.1",
     "karma": "^1.4.0",
+    "karma-chrome-launcher": "^1.0.0",
     "karma-firefox-launcher": "^1.0.0",
     "karma-mocha": "^1.3.0",
     "karma-mocha-reporter": "^2.2.2",
