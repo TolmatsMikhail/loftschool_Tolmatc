@@ -43,6 +43,11 @@ module.exports = {
             template: 'cookie.hbs',
             filename: 'cookie.html',
             chunks: ['cookie']
+//             title: 'Div Drag And Drop',
+//             template: 'towns.hbs',
+//             filename: 'towns.html',
+//             chunks: ['towns']
+
         }),
         new CleanWebpackPlugin(['dist'])
     ]
