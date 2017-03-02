@@ -1,6 +1,9 @@
 body {
     font-family: Helvetica, sans-serif;
     font-size: 16px;
+    user-select: none;
+    -webkit-user-select: none;
+    -moz-user-select: none;
 }
 * {
     box-sizing: border-box;
@@ -43,7 +46,6 @@ body {
 }
 .layout {
     background-color: rgba(0,0,0,0.5);
-    position: absolute;
     top: 50px;
     left: 0;
     bottom: 0;
@@ -127,6 +129,7 @@ body {
     font-size: 0;
     cursor: pointer;
     width: 260px;
+    background-color: white;
 }
 .one_friend:active {
     background-color: #f0f0f0;
@@ -142,6 +145,7 @@ body {
     border-radius: 50%;
     border: 1px solid red;
     overflow: hidden; 
+    pointer-events: none
 }
 .one_friend_item_image > img {
     width: 100%;
@@ -163,4 +167,19 @@ body {
 }
 .friends_item_right_inner{
     min-height: 290px;
+}
+
+
+
+
+
+#basket{
+
+    right: 0px;
+    bottom: 0px;
+    width: 150px;
+    cursor: pointer;
+}
+#basket > img {
+    width: 100%;
 }

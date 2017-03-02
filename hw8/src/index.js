@@ -86,20 +86,7 @@ var left_friends = left_friends_container.querySelectorAll('.one_friend');
 
 var right_friends_container = document.querySelector('.friends_item_right');
 
-
-
-var bigLayout = document.querySelector('.layout ');
-// var test = document.querySelector('#test');
-
-// function me(){
-//     var left_friends_container = document.querySelector('.friends_item_left');
-//     var left_friends = left_friends_container.querySelectorAll('.one_friend');
-
-//     console.log(left_friends_container);
-//     console.log(left_friends);
-// }
-
-// test.addEventListener('click', me);
+var layoutContainer = document.querySelector('.layout_container');
 
 var movable = true;
 
@@ -123,12 +110,7 @@ leftList.addEventListener('mousedown', function(e) {
 
     thisFriendCard = findParent(e.target);
 
-// Функция вернем объект с начальными координатами
-    // getStartCoordinates(thisFriendCard)
-
-    // console.log(getStartCoordinates(thisFriendCard))
-
-    thisFriendCard.style.position = 'absolute';
+    thisFriendCard.style.position = 'fixed';
 
 
 
@@ -141,7 +123,7 @@ leftList.addEventListener('mousedown', function(e) {
 
 });
 
-bigLayout.addEventListener('mouseup', function(e) {
+document.addEventListener('mouseup', function(e) {
 
     movable = false;
 
@@ -152,24 +134,12 @@ bigLayout.addEventListener('mouseup', function(e) {
         fromTop : right_friends_container.offsetHeight,
         fromLeft : right_friends_container.offsetWidth
     }
+    if(!thisFriendCard) return;
 
-    // thisFriendCard.style.position = 'static';
+    thisFriendCard.style.position = 'static';
+    thisFriendCard.style.left = 'initial';
+    thisFriendCard.style.top = 'initial';
 
-    var movedContainerX = thisFriendCard.offsetWidth;
-    var movecontainerY = thisFriendCard.offsetHeight;
-
-    var rigthColumnTop = right_friends_container_coord.fromTop;
-    var rightColumnLeft = right_friends_container_coord.fromLeft;
-
-    console.log('Координаты правого контейнера сверху ' + rigthColumnTop);
-    console.log('Координаты таскаемого контейнера сверху ' + movedContainerX);
-
-    console.log('__________')
-
-    console.log('Координаты правого контейнера слева ' + rightColumnLeft);
-    console.log('Координаты таскаемого контейнера слева ' + movedContainerX); 
-
-    console.log('№№№№№№№№№№№№№№№№№№№№№');
 
 })
 
@@ -178,8 +148,11 @@ bigLayout.addEventListener('mouseup', function(e) {
 // Задаем координаты блока для перемещения относительно страничи
 function makeMovingBlock(e, target) {
 
-    target.style.left = e.pageX - target.offsetWidth / 2 + 'px';
-    target.style.top = e.pageY - target.offsetHeight / 2 +'px';
+    target.style.left = e.pageX - 50 + 'px';
+    target.style.top = e.pageY - 25 +'px';
+
+    console.log(e);
+
 }
 
 
@@ -196,3 +169,18 @@ function findParent(elem) {
         return findParent(elem);
     }
 }
+
+
+// (function() {
+//     var a = document.querySelector('.friends_item_right');
+//     console.log(a.clientY)
+//     console.log(a.clientX)
+// })()
+
+
+var basket = document.getElementById('basket');
+var basketCoord = basket.getBoundingClientRect();
+console.log(basketCoord.top + ' Сверху');
+console.log(basketCoord.right + ' Справа');
+console.log(basketCoord.bottom + ' Снизу');
+console.log(basketCoord.left + ' Слева');
