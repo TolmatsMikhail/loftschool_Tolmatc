@@ -55,7 +55,7 @@ body {
     max-width: 620px;
     height: 490px;
     background-color: #fff;
-    margin: 260px auto 0;
+    margin: 0px auto 0;
     border-radius: 10px;
     overflow: hidden;
     position: relative;
@@ -126,6 +126,7 @@ body {
     padding: 9px 6px; 
     font-size: 0;
     cursor: pointer;
+    width: 260px;
 }
 .one_friend:active {
     background-color: #f0f0f0;
@@ -155,7 +156,7 @@ body {
     white-space: nowrap;
     overflow: hidden;
     text-overflow: ellipsis; 
-    width: 195px;
+    width: 185px;
 }
 .one_friend_item_plus{
     padding-top: 13px;

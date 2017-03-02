@@ -87,6 +87,8 @@ var left_friends = left_friends_container.querySelectorAll('.one_friend');
 var right_friends_container = document.querySelector('.friends_item_right');
 
 
+
+var bigLayout = document.querySelector('.layout ');
 // var test = document.querySelector('#test');
 
 // function me(){
@@ -99,53 +101,98 @@ var right_friends_container = document.querySelector('.friends_item_right');
 
 // test.addEventListener('click', me);
 
-leftList.addEventListener('click', function(e) {
-    
-    var a = findParent(e.target);
-    // Тот самый нужный элемент
-    console.log(a)
+var movable = true;
 
-    // addListeners(thisElement);
+var thisFriendCard;
 
+function getStartCoordinates(elem) {
+    var thisFriendCardStartX = elem.getBoundingClientRect().left;
+    var thisFriendCardStartY = elem.getBoundingClientRect().top;
+
+    var coordinates = {
+        x: thisFriendCardStartX,
+        y: thisFriendCardStartY
+    }
+
+    return coordinates;
+}
+// Нажмем на список, выберем среди друзей одного из друзей. 
+leftList.addEventListener('mousedown', function(e) {
+
+    movable = true;
+
+    thisFriendCard = findParent(e.target);
+
+// Функция вернем объект с начальными координатами
+    // getStartCoordinates(thisFriendCard)
+
+    // console.log(getStartCoordinates(thisFriendCard))
+
+    thisFriendCard.style.position = 'absolute';
+
+
+
+    // И будем таскать его по странице
+    document.addEventListener('mousemove', function(e) {
+        if(movable) {
+            makeMovingBlock(e, thisFriendCard);
+        }
+    })
 
 });
 
+bigLayout.addEventListener('mouseup', function(e) {
+
+    movable = false;
+
+
+        // Где правый блок?? Куда будем помещать карточки друзей?
+
+    var right_friends_container_coord = {
+        fromTop : right_friends_container.offsetHeight,
+        fromLeft : right_friends_container.offsetWidth
+    }
+
+    // thisFriendCard.style.position = 'static';
+
+    var movedContainerX = thisFriendCard.offsetWidth;
+    var movecontainerY = thisFriendCard.offsetHeight;
+
+    var rigthColumnTop = right_friends_container_coord.fromTop;
+    var rightColumnLeft = right_friends_container_coord.fromLeft;
+
+    console.log('Координаты правого контейнера сверху ' + rigthColumnTop);
+    console.log('Координаты таскаемого контейнера сверху ' + movedContainerX);
+
+    console.log('__________')
+
+    console.log('Координаты правого контейнера слева ' + rightColumnLeft);
+    console.log('Координаты таскаемого контейнера слева ' + movedContainerX); 
+
+    console.log('№№№№№№№№№№№№№№№№№№№№№');
+
+})
+
+
+
+// Задаем координаты блока для перемещения относительно страничи
+function makeMovingBlock(e, target) {
+
+    target.style.left = e.pageX - target.offsetWidth / 2 + 'px';
+    target.style.top = e.pageY - target.offsetHeight / 2 +'px';
+}
+
+
+// Ищем блок с классом one_friend.
 function findParent(elem) {
     var elemParent;
 
     if (elem.classList.contains('one_friend')) {
-        console.log('111111');
 
         return elem;
     } else {
-        console.log('22222')
         elem = elem.parentNode;
 
         return findParent(elem);
     }
-}
-
-function addListeners(target) {
-    var isMovable = false;
-
-    target.addEventListener('mousedown', function(e) {
-        
-        isMovable = true;
-    })
-
-    target.addEventListener('mouseup', function(e) {
-        isMovable = false;
-    })
-
-    document.addEventListener('mousemove', function(e) {
-        if(isMovable) {
-            makeMovingBlock(e, target);
-        }
-    })
-}
-
-function makeMovingBlock(e, target) {
-
-    target.style.left = e.pageX - target.offsetWidth / 2 + 'px';
-    target.style.top = e.pageY - target.offsetHeight / 2 + 'px';
 }
