@@ -48,7 +48,7 @@
 					<p class="friends_item__title">
 						Ваши друзья
 					</p>
-					<div class="friends_item_right_inner">
+					<div class="friends_item_right_inner" id="friends_item_right_inner_block" ondrop="return drop(event)" ondragover="return allowDrop(event)">
 						
 					</div>
 				</div>
@@ -63,6 +63,7 @@
 			</button>
 		</div>
 	</div>
+	<div id="basket" title="Удалить из друзей!" ondrop="deleteFriend(event)"  ondragover="return allowDrop(event)"></div>
 
 </div>
  
