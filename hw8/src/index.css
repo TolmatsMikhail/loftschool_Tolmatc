@@ -41,8 +41,8 @@ body {
 }
 .img_logo{
     display: block;
-    margin: 40px auto 0;
-    width: 300px;
+    margin: 0 auto;
+    width: 100px;
 }
 .layout {
     background-color: rgba(0,0,0,0.5);
@@ -129,11 +129,7 @@ body {
     font-size: 0;
     cursor: pointer;
     width: 260px;
-<<<<<<< HEAD
     position: relative;
-=======
-    background-color: white;
->>>>>>> 8eef3126b95f48d77548e379de4414f55dfe5fde
 }
 .one_friend:active {
     background-color: #f0f0f0;
@@ -149,11 +145,7 @@ body {
     border-radius: 50%;
     border: 1px solid #808080;
     overflow: hidden; 
-<<<<<<< HEAD
     pointer-events: none;
-=======
-    pointer-events: none
->>>>>>> 8eef3126b95f48d77548e379de4414f55dfe5fde
 }
 .one_friend_item_image > img {
     width: 100%;
@@ -177,7 +169,6 @@ body {
 .friends_item_right_inner{
     min-height: 290px;
 }
-<<<<<<< HEAD
 .friends_item_right_inner .one_friend{
     width: 273px;   
 }
@@ -202,20 +193,5 @@ body {
     -webkit-background-size: 100%;
     background-size: 100%;
     background-repeat: no-repeat;
-=======
 
-
-
-
-
-#basket{
-
-    right: 0px;
-    bottom: 0px;
-    width: 150px;
-    cursor: pointer;
-}
-#basket > img {
-    width: 100%;
->>>>>>> 8eef3126b95f48d77548e379de4414f55dfe5fde
 }

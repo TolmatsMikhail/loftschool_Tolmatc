@@ -49,34 +49,14 @@ function createFriendsDiv(friends) {
 function setElementDraggable() {
     var draggableElements = document.querySelectorAll('.one_friend');
 
-<<<<<<< HEAD
     for (var i = 0; i < draggableElements.length; i++) {
         draggableElements[i].setAttribute('draggable', 'true');
         draggableElements[i].setAttribute('ondragstart', 'drag(event)');
         draggableElements[i].setAttribute('id', i+1)
         draggableElements[i].setAttribute('ondrop', 'false')
-=======
-
-var right_friends_container = document.querySelector('.friends_item_right');
-
-var layoutContainer = document.querySelector('.layout_container');
-
-var movable = true;
-
-var thisFriendCard;
-
-function getStartCoordinates(elem) {
-    var thisFriendCardStartX = elem.getBoundingClientRect().left;
-    var thisFriendCardStartY = elem.getBoundingClientRect().top;
-
-    var coordinates = {
-        x: thisFriendCardStartX,
-        y: thisFriendCardStartY
->>>>>>> 8eef3126b95f48d77548e379de4414f55dfe5fde
     }
 }
 
-<<<<<<< HEAD
 window.drag = function(ev) {
     ev.dataTransfer.setData('text', ev.target.id);
 }
@@ -87,11 +67,6 @@ window.drop = function(ev) {
 
     ev.target.appendChild(document.getElementById(data));
 }
-=======
-    thisFriendCard = findParent(e.target);
-
-    thisFriendCard.style.position = 'fixed';
->>>>>>> 8eef3126b95f48d77548e379de4414f55dfe5fde
 
 window.deleteFriend = function(ev) {
     ev.preventDefault();
@@ -105,15 +80,10 @@ window.deleteFriend = function(ev) {
     })
 }
 
-<<<<<<< HEAD
 window.allowDrop = function(ev) {
     ev.preventDefault();
 }
-=======
-});
 
-document.addEventListener('mouseup', function(e) {
->>>>>>> 8eef3126b95f48d77548e379de4414f55dfe5fde
 
 loadFriends.addEventListener('click', function() {
     login()
@@ -137,7 +107,7 @@ function findParent(elem, classToFind) {
 
         return elem;
     }
-<<<<<<< HEAD
+
     elem = elem.parentNode;
 
     return findParent(elem, classToFind);
@@ -166,27 +136,6 @@ function rightCossClick(e) {
     } else {
         return;
     }
-=======
-    if(!thisFriendCard) return;
-
-    thisFriendCard.style.position = 'static';
-    thisFriendCard.style.left = 'initial';
-    thisFriendCard.style.top = 'initial';
-
-
-})
-
-
-
-// Задаем координаты блока для перемещения относительно страничи
-function makeMovingBlock(e, target) {
-
-    target.style.left = e.pageX - 50 + 'px';
-    target.style.top = e.pageY - 25 +'px';
-
-    console.log(e);
-
->>>>>>> 8eef3126b95f48d77548e379de4414f55dfe5fde
 }
 
 // Функция поиска совпадений по части слова
@@ -234,23 +183,5 @@ rightSearchInput.addEventListener('keyup', function(e) {
             counter = counter + 1;
         }
     }
-<<<<<<< HEAD
 })
-=======
-}
 
-
-// (function() {
-//     var a = document.querySelector('.friends_item_right');
-//     console.log(a.clientY)
-//     console.log(a.clientX)
-// })()
-
-
-var basket = document.getElementById('basket');
-var basketCoord = basket.getBoundingClientRect();
-console.log(basketCoord.top + ' Сверху');
-console.log(basketCoord.right + ' Справа');
-console.log(basketCoord.bottom + ' Снизу');
-console.log(basketCoord.left + ' Слева');
->>>>>>> 8eef3126b95f48d77548e379de4414f55dfe5fde
