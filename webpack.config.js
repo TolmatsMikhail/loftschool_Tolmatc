@@ -38,6 +38,18 @@ module.exports = {
             filename: 'index.html',
             chunks: ['main']
         }),
+        // new HtmlPlugin({
+        //     title: 'Cookie editor',
+        //     template: 'cookie.hbs',
+        //     filename: 'cookie.html',
+        //     chunks: ['cookie']
+//             title: 'Div Drag And Drop',
+//             template: 'towns.hbs',
+//             filename: 'towns.html',
+//             chunks: ['towns']
+
+        // }),
+
         new CleanWebpackPlugin(['dist'])
     ]
 };
