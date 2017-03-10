@@ -2,16 +2,28 @@ require('./index.css');
 // 5901122
 // Все на промисах (каждый запрос), т.к. на каждой стадии запроса что-то может пойти не так
 
+// Кнопка "загрузить всех друзей"
 var loadFriends = document.querySelector('#loadFriends');
+// Список друзей слева
 var leftList = document.querySelector('.friends_item_left_inner');
+// Список друзей справа
 var rightList = document.querySelector('.friends_item_right_inner');
-var leftSearchInput = document.querySelector('.friends_item_search_left_input');
-var rightSearchInput = document.querySelector('.friends_item_search_right_input');
-
+// Левый инпут для фильтрации
+var inputFilterLeft = document.querySelector('.friends_item_search_left_input');
+// Правый инпут для фильтрации
+var inputFilterRight = document.querySelector('.friends_item_search_right_input');
+// Счетчик друзей слева
 var leftFriendsCounter = document.querySelector('#leftFriendsCounter');
+// Счетчик друзей справа
 var rightFriendsCounter = document.querySelector('#rightFriendsCounter');
+// Массив друзей для отображения слева
+var allfriends;
+// Массив дрпузей для отображения справа
+var allfriendsRight = [];
+// Кнопка "сохранить" - сохранить состояние в localStorage
+var layout_container_bottom_save = document.querySelector('.layout_container_bottom_save');
 
-// Инициализация приложения и проверка - разрешили нам или нет
+// Инициализация приложения и проверка - разрешили нам или нет залогиниться
 function login() {
     return new Promise(function (resolve, reject) {
         // Инициализщируем API
@@ -29,7 +41,7 @@ function login() {
     })
 }
 
-// Тут мы запрашиваем каким-то методом какие-то параметры.
+// Универсальная функция обращения к VK api указанным методом с указанными параметрами. Надо смотреть в VK api
 function getFriends(method, params) {
     return new Promise(function(resolve, reject) {
         VK.Api.call(method, params, function(result) {
@@ -47,7 +59,7 @@ function getFriends(method, params) {
 // hbs = {{#each ПАРАМЕТР-объект}}
 function createFriendsDiv(friends) {
     var templateFn = require('../../friend-template.hbs');
-
+    // На всякий случай сортируем друзей по их id вконтакте
     var sortedFriends = friends.sort(sortingById);
 
     return templateFn({
@@ -55,13 +67,15 @@ function createFriendsDiv(friends) {
     });
 }
 
+// Функция сортировки друзей при возвращении шаблона. Для функции выше
 function sortingById(a, b) {
     if (a.id > b.id) return 1;
     if (a.id < b.id) return -1;
 }
 // Эта функция запустится, когда шаблон с друзьями уже отработал, есть друзья с классами. 
 // Делаем каждый элемент "двигательным"(или двигаемым, как сказать-то) путем задания ему
-// draggable='true"
+// draggable='true", а также функций, необходимых для движения элемента по экрану. 
+// HTML5 api drag-n-drop
 function setElementDraggable(elem) {
     var whereToInsert = document.querySelector(elem);
     var draggableElements = whereToInsert.querySelectorAll('.one_friend');
@@ -74,41 +88,9 @@ function setElementDraggable(elem) {
     }
 }
 
-
-
-var allfriends;
-
-var allfriendsRight = [];
-
-loadFriends.addEventListener('click', function() {
-    // Открывает окно с друзьями
-    document.querySelector('.layout').classList.remove('hidden');
-    rightList.innerHTML = null;
-    login()
-        .then(
-            () => getFriends('friends.get', { v: 5.62,fields: ['city', 'country', 'photo_100', 'user_id', 'order: random'] })
-        )
-        .then(
-            (result) => {
-                leftList.innerHTML = createFriendsDiv(result.items);
-                allfriends = result.items;
-                leftFriendsCounter.innerHTML = allfriends.length;
-                rightFriendsCounter.innerHTML = allfriendsRight.length;
-            }
-        )
-        .then(
-            () => setElementDraggable('.friends_item_left_inner')
-        )
-})
-/*
-document.addEventListener('click', function(e){
-    if(e.target.classList.contains('layout_container_close') || e.target.getAttribute('src') == 'img/cross.png') {
-        // Закрывает окно с друзьями
-        document.querySelector('.layout').classList.remove('hidden');
-    }
-})
-*/
-// Ищем блок - родитель с классом one_friend.
+// Часто придется искать элемент с классом  .one_friend, поэтому
+// Пишем универсальную функцию поиска родительского элемента с указанным классом. 
+// Через рекурсию.
 function findParent(elem, classToFind) {
     if (elem.classList.contains(classToFind)) {
 
@@ -120,7 +102,8 @@ function findParent(elem, classToFind) {
     return findParent(elem, classToFind);
 }
 
-// Функция для фильтрации, например. Совпадающий элемент удалим из массива
+/* К сожалению, еще не понял как создать универсальную для обоих случаев. см. наверх*/
+// Функция для фильтрации массива. Совпадающий элемент удалим из массива
 function removeElementFromFriendsList(arr, i) {
     allfriendsRight.unshift(arr[i]);
     return arr.splice(i, 1);
@@ -132,14 +115,17 @@ function removeElementFromFriendsListRight(arr, i) {
     return arr.splice(i, 1);
 }
 
-// Установка атрибутов id для элементов
+// Установка атрибутов id для элементов. id будет соответствовать номеру в массиве.
+// Пригодится.
 function setId(arr) {
     for(var i = 0; i < arr.length; i++) {
         arr[i].setAttribute('id', i);
     }
 }
 
-
+/*
+    Три функции для drag-n-drop
+*/
 
 // На "драггабельном" элементе вызываем функцию, которая 
 // будет получать данные об этом элементе. Такой уж стандарт HTML5 drag-n-drop
@@ -177,40 +163,86 @@ window.allowDrop = function(ev) {
     ev.preventDefault();
 }
 
-var inputFilterLeft = document.querySelector('.friends_item_search_left_input');
-var inputFilterRight = document.querySelector('.friends_item_search_right_input');
+
+// Функция поиска совпадений по части слова в строке. Пригодится для фильтрации.
+function isMatching(what, where) {
+
+    var whatEqual = what.toLowerCase();
+    var whereEqual = where.toLowerCase();
+
+    var matchValue = whatEqual.indexOf(whereEqual);
+
+    if (matchValue > -1) {
+        return true;
+    }
+
+    return false;
+}
+
+// По клику на кнопку "загрузить всех друзей" выполняем последовательность действий
+loadFriends.addEventListener('click', function() {
+    // Открывает окно с друзьями
+    document.querySelector('.layout').classList.remove('hidden');
+    // Чистим левый список. Это на случай загрузки друзей из localStorage
+    rightList.innerHTML = null;
+    // Логинимся
+    login()
+        .then(
+            // Запрашиваем список друзей 
+            () => getFriends('friends.get', { v: 5.62,fields: ['city', 'country', 'photo_100', 'user_id', 'order: random'] })
+        )
+        .then(
+            // С полученным результатом - объектом наполняем левую колонку блоками с друзьями.
+            (result) => {
+                leftList.innerHTML = createFriendsDiv(result.items);
+                allfriends = result.items;
+                // И заполняем счетчики друзей слева и справа
+                leftFriendsCounter.innerHTML = allfriends.length;
+                rightFriendsCounter.innerHTML = allfriendsRight.length;
+            }
+        )
+        .then(
+            // Делаем элементы двигаемыми
+            () => setElementDraggable('.friends_item_left_inner')
+        )
+})
+/*
+document.addEventListener('click', function(e){
+    if(e.target.classList.contains('layout_container_close') || e.target.getAttribute('src') == 'img/cross.png') {
+        // Закрывает окно с друзьями
+        document.querySelector('.layout').classList.remove('hidden');
+    }
+})
+*/
 
 // Клик по плюсику - из левой колонки переносим карточку элементу в правую колонку
 leftList.addEventListener('click', leftPlusClick);
 
 function leftPlusClick(e) {
 
-    // Если target содержит класс нашей картинки или класс блока, в котором эта картинка
+    // Если target содержит класс нашей картинки-плюсика или класс блока, в котором эта картинка
     if (e.target.classList.contains('one_friend_item_plus') || e.target.classList.contains('one_friend_item_plus_image')) {
 
-        // ищем id кликнутого элемента(точнее родителя). id каждый раз переписывается!! так что номер 
-        // элемента в массиве соответствует id. Ураа!! хех :-)
+        // ищем id кликнутого элемента(точнее его родителя)
         var removedFromLeftNumber = findParent(e.target, 'one_friend').id;
 
         // Удаляем кликнутый элемент из массива друзей СЛЕВА
         removeElementFromFriendsList(allfriends, removedFromLeftNumber)
 
-        // Заполняем левую часть по шаблону из получившегося нового массива объектов
-        
+        // Заполняем левую часть по шаблону из получившегося нового массива объектов        
         leftList.innerHTML = createFriendsDiv(allfriends);
 
-        // На каждом заполнении мы будем назначать обработчики для drag-n-drop для элементов
-        // Левой колонки
+        // На каждом заполнении мы будем назначать обработчики для drag-n-drop для элементов. 
+        // Левой колонки. Ато они удаляются
         setElementDraggable('.friends_item_left_inner');
 
-        // В правую будет помещать опять ж создаваемый шаблон на основе удаленных элементов.
-        
+        // В правую будет помещать опять ж создаваемый шаблон на основе удаленных элементов.        
         rightList.innerHTML = createFriendsDiv(allfriendsRight);
 
-        // Установить id кадому элементу
+        // Установить id кадому элементу левой и правой колонки
         setId(rightList.children);
         setId(leftList.children);
-
+        // Счетчики друзей слева и справа
         leftFriendsCounter.innerHTML = allfriends.length;
         rightFriendsCounter.innerHTML = allfriendsRight.length;    
 
@@ -224,9 +256,6 @@ rightList.addEventListener('click', rightCossClick);
 
 function rightCossClick(e) {
     if (e.target.classList.contains('one_friend_item_plus') || e.target.classList.contains('one_friend_item_plus_image')) {    
-
-        // ищем id кликнутого элемента(точнее родителя). id каждый раз переписывается!! так что номер 
-        // элемента в массиве соответствует id. Ураа!! хех :-)
         var removedFromRightNumber = findParent(e.target, 'one_friend').id;
 
         // Удаляем кликнутый элемент из массива друзей СПРАВА
@@ -242,8 +271,6 @@ function rightCossClick(e) {
         
         rightList.innerHTML = createFriendsDiv(allfriendsRight);
 
-
-
         leftFriendsCounter.innerHTML = allfriends.length;
         rightFriendsCounter.innerHTML = allfriendsRight.length;
 
@@ -255,51 +282,33 @@ function rightCossClick(e) {
     }
 }
 
-// Функция поиска совпадений по части слова
-function isMatching(what, where) {
-
-    var whatEqual = what.toLowerCase();
-    var whereEqual = where.toLowerCase();
-
-    var matchValue = whatEqual.indexOf(whereEqual);
-
-    if (matchValue > -1) {
-        return true;
-    }
-
-    return false;
-}
-
-var layout_container_bottom_save = document.querySelector('.layout_container_bottom_save');
-
-
-
-
+// Фильтрации в левом инпуте по нажатию на кнопку. Точнее, по ее "отпусканию" после нажатия
 inputFilterLeft.addEventListener('keyup', function() {
-
+    // Если в фильтре ничего нет или мы все удалили
     if(inputFilterLeft.value == '') {      
-          
+        // Левый список наполняется друзьями
         leftList.innerHTML = createFriendsDiv(allfriends);
-
-
+        // Делаем элементы слева двигаемыми
         setElementDraggable('.friends_item_left_inner');
-
+        // Ставим id
         setId(rightList.children);
         setId(leftList.children);
-
+        // Ставим счетчик
         leftFriendsCounter.innerHTML = allfriends.length;
 
         return;
     }
-
-    var newFilteredArrayLeft = []
+    // А если нет, то вот новый массив, куда будет складывать совпадения с введенным значением в инпуте
+    var newFilteredArrayLeft = [];
 
     for(var i = 0; i < allfriends.length; i++) {
+        // Если совпадение есть
         if(isMatching(allfriends[i].first_name + ' ' + allfriends[i].last_name, inputFilterLeft.value)) {
+            // Поместим в новый массив 
             newFilteredArrayLeft.push(allfriends[i]);
         }
     }
-    
+    // С новым массивом выведем список
     leftList.innerHTML = createFriendsDiv(newFilteredArrayLeft);
 
     setElementDraggable('.friends_item_left_inner');
@@ -344,16 +353,16 @@ inputFilterRight.addEventListener('keyup', function() {
     rightFriendsCounter.innerHTML = newFilteredArrayRight.length;
 })
 
+// По клику на кнопку "сохранить" - запишем состояние в localStorage. 
+// На самом деле запишем туда массивы объектов друзей, чтобы при загрузке
+// Они заново обрабатывались и выводились 
 layout_container_bottom_save.addEventListener('click', function(e) {
     e.preventDefault();
     var data = {
         arrayLeft: allfriends,
         arrayRight: allfriendsRight
-    }
-
-    
+    }    
     localStorage.myFriends = JSON.stringify(data);
-
 })
 
 window.addEventListener('load', function() {
