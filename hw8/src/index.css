@@ -27,6 +27,7 @@ body {
     overflow-y: scroll;
     padding: 15px 10px;
     padding-top: 0;
+    position: relative;
 }
 .friends_item_left {
     border-right: 1px solid #f0f0f0;
@@ -36,8 +37,13 @@ body {
     padding: 0;
     font-size: 14px;
     line-height: 14px;
-    padding: 15px 0 5px;
     border-bottom: 1px solid #f0f0f0;
+    position: absolute;
+    display: block;
+    width: 90%;
+    top: 15px;
+    left: 10px;
+    padding-bottom: 10px
 }
 .img_logo{
     display: block;
@@ -46,11 +52,13 @@ body {
 }
 .layout {
     background-color: rgba(0,0,0,0.5);
-    top: 50px;
+    top: 100px;
     left: 0;
     bottom: 0;
     right: 0;
     display: block;
+    position: absolute;
+    
 }
 .layout_container {
     width: 100%;
@@ -60,7 +68,10 @@ body {
     margin: 0px auto 0;
     border-radius: 10px;
     overflow: hidden;
-    position: relative;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
 }
 .layout_container_top {
     padding: 16px 15px 12px; 
@@ -166,8 +177,9 @@ body {
 .one_friend_item_plus{
     padding-top: 13px;
 }
-.friends_item_right_inner{
+.friends_item_right_inner, .friends_item_left_inner{
     min-height: 290px;
+    padding-top: 40px;
 }
 .friends_item_right_inner .one_friend{
     width: 273px;   

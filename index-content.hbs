@@ -2,9 +2,16 @@
 
 <button id="loadFriends">загрузить список друзей</button>
 
-<button id="test">
-	Тестовая кнопка
-</button>
+
+<!-- <a href="
+https://oauth.vk.com/authorize?client_id=5901122&redirect_uri=http://localhost:8080/webpack-dev-server/&display=page&response_type=code&v=5.62&scope=friends">
+asdasdasdasd</a> -->
+
+
+<!-- <a href="https://oauth.vk.com/access_token?client_id=5901122&client_secret=rZaiMeECt6Weq1TBpKqN&redirect_uri=http://localhost:8080/webpack-dev-server/&">
+	
+	Другая ссылка
+</a> -->
 
 
 <img class="img_logo" src="img/other_filter_img.png" alt="">
@@ -13,8 +20,8 @@
 	<div class="layout_container">
 		<div class="layout_container_top">
 			Выберите друзей
-			<div class="layout_container_close">
-				<img src="img/cross.png" alt="">
+			<div class="layout_container_close" >
+				<img src="img/cross.png" alt="" title="Закрыть окно с друзьями">
 			</div>
 		</div>
 		<div id="friends">
@@ -63,6 +70,6 @@
 			</button>
 		</div>
 	</div>
-	<div id="basket" title="Удалить из друзей!" ondrop="deleteFriend(event)"  ondragover="return allowDrop(event)"></div>
+<!-- 	<div id="basket" title="Удалить из друзей!" ondrop="deleteFriend(event)"  ondragover="return allowDrop(event)"></div> -->
 
 </div>
