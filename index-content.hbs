@@ -2,18 +2,6 @@
 
 <button id="loadFriends">загрузить список друзей</button>
 
-
-<!-- <a href="
-https://oauth.vk.com/authorize?client_id=5901122&redirect_uri=http://localhost:8080/webpack-dev-server/&display=page&response_type=code&v=5.62&scope=friends">
-asdasdasdasd</a> -->
-
-
-<!-- <a href="https://oauth.vk.com/access_token?client_id=5901122&client_secret=rZaiMeECt6Weq1TBpKqN&redirect_uri=http://localhost:8080/webpack-dev-server/&">
-	
-	Другая ссылка
-</a> -->
-
-
 <img class="img_logo" src="img/other_filter_img.png" alt="">
 
 <div class="layout hidden">
@@ -35,7 +23,7 @@ asdasdasdasd</a> -->
 
 				<div class="friends_item_left">
 					<p class="friends_item__title">
-						Ваши друзья
+						Ваши друзья (<span id="leftFriendsCounter">0</span>)
 					</p>
 					<div class="friends_item_left_inner">
 						
@@ -53,7 +41,7 @@ asdasdasdasd</a> -->
 				</div>
 				<div class="friends_item_right">
 					<p class="friends_item__title">
-						Ваши друзья
+						Ваши друзья (<span id="rightFriendsCounter">0</span>)
 					</p>
 					<div class="friends_item_right_inner" id="friends_item_right_inner_block" ondrop="return drop(event)" ondragover="return allowDrop(event)">
 						
@@ -70,6 +58,4 @@ asdasdasdasd</a> -->
 			</button>
 		</div>
 	</div>
-<!-- 	<div id="basket" title="Удалить из друзей!" ondrop="deleteFriend(event)"  ondragover="return allowDrop(event)"></div> -->
-
 </div>
