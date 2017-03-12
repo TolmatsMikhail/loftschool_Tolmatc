@@ -52,7 +52,7 @@ body {
 }
 .layout {
     background-color: rgba(0,0,0,0.5);
-    top: 100px;
+    top: 0;
     left: 0;
     bottom: 0;
     right: 0;
@@ -84,9 +84,9 @@ body {
     float: right;
     cursor: pointer;
 }
-/*.hidden {
+.hidden {
     display: none;
-}*/
+}
 .friends_item_search {
     background-color: #f0f0f0;
     padding: 10px;
@@ -101,6 +101,10 @@ body {
     font-size: 12px;
     line-height: 14px;
     padding: 8px 29px;
+}
+.friends_item_search  input:focus {
+    border: 1px solid #ff8663;
+    padding: 7px 28px;
 }
 .friends_item_search_left {
     padding-left: 15px;
@@ -122,7 +126,8 @@ body {
     width: 100%;
     left: 0;
 }
-.layout_container_bottom_save {
+.layout_container_bottom_save,
+.cleanLocalStorage {
     background-color: #ff8663;
     font-size: 14px;
     line-height: 14px;
@@ -134,6 +139,31 @@ body {
     border-radius: 10px;
     width: 87px;
     cursor: pointer;
+    transition: all 150ms linear;
+}
+.layout_container_bottom_save:hover{
+    background-color: #b25d45;
+    color: #e5e5e5;
+    transition: all 150ms linear;
+    border-radius: 20px;
+}
+.cleanLocalStorage {
+    width: auto;
+    padding: 9px;
+    background-color: #808080; 
+}
+.cleanLocalStorage:disabled{
+    background-color: #ccc;
+}
+.cleanLocalStorage:disabled:hover{
+    background-color: #ccc;
+    border-radius: 10px;
+}
+
+.cleanLocalStorage:hover{
+    background-color: #4c4c4c;
+    border-radius: 20px;
+    transition: all 150ms linear;
 }
 .one_friend{
     padding: 9px 6px; 

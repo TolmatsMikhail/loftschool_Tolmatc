@@ -1,6 +1,7 @@
 <script type="text/javascript" src="https://vk.com/js/api/openapi.js?122"></script>
 
 <button id="loadFriends">загрузить список друзей</button>
+<button onclick="window.location.reload()" title="Для проверки хранения данных в localStorage">перезагрузить страницу</button>
 
 <img class="img_logo" src="img/other_filter_img.png" alt="">
 
@@ -25,12 +26,9 @@
 					<p class="friends_item__title">
 						Ваши друзья (<span id="leftFriendsCounter">0</span>)
 					</p>
-					<div class="friends_item_left_inner">
-						
-					</div>
+					<!-- Левый список друзей -->
+					<div class="friends_item_left_inner"></div>
 				</div>
-
-
 			</div>		
 			<div class="friends_right friends_item">
 				<div class="friends_item_search friends_item_search_right">
@@ -43,9 +41,9 @@
 					<p class="friends_item__title">
 						Ваши друзья (<span id="rightFriendsCounter">0</span>)
 					</p>
-					<div class="friends_item_right_inner" id="friends_item_right_inner_block" ondrop="return drop(event)" ondragover="return allowDrop(event)">
-						
-					</div>
+					<!-- Правый список друзей -->
+					<div class="friends_item_right_inner" id="friends_item_right_inner_block" ondrop="
+					return drop(event)" ondragover="return allowDrop(event)"></div>
 				</div>
 
 
@@ -56,6 +54,12 @@
 			<button class="layout_container_bottom_save" title="Сохранить состояние в localStorage">
 				Сохранить
 			</button>
+
+			<button class="cleanLocalStorage" title="Очистить LocalStorage">
+				Очистить LocalStorage
+			</button>
+
+			<!-- <button onclick="window.location.reload()">Перезагрузка страницы</button> -->
 		</div>
 	</div>
 </div>
