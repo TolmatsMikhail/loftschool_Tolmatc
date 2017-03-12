@@ -184,9 +184,7 @@ loadFriends.addEventListener('click', function() {
     login()
         .then(
             // Запрашиваем список друзей 
-            () => {
-                getFriends('friends.get', { v: 5.62, fields: ['city', 'country', 'photo_100', 'user_id', 'order: random'] })
-            }
+            () => getFriends('friends.get', { v: 5.62, fields: ['city', 'country', 'photo_100', 'user_id', 'order: random'] })
         )
         .then(
             // С полученным результатом - объектом наполняем левую колонку блоками с друзьями.
