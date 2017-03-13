@@ -76,21 +76,6 @@ function sortingById(a, b) {
         return -1
     }
 }
-// Эта функция запустится, когда шаблон с друзьями уже отработал, есть друзья с классами. 
-// Делаем каждый элемент "двигательным"(или двигаемым, как сказать-то) путем задания ему
-// draggable='true", а также функций, необходимых для движения элемента по экрану. 
-// HTML5 api drag-n-drop
-// function setElementDraggable(elem) {
-//     var whereToInsert = document.querySelector(elem);
-//     var draggableElements = whereToInsert.querySelectorAll('.one_friend');
-
-//     for (var i = 0; i < draggableElements.length; i++) {
-//         draggableElements[i].setAttribute('draggable', 'true');
-//         draggableElements[i].setAttribute('ondragstart', 'drag(event)');
-//         draggableElements[i].setAttribute('id', i)
-//         draggableElements[i].setAttribute('ondrop', 'false')
-//     }
-// }
 
 // Часто придется искать элемент с классом  .one_friend, поэтому
 // Пишем универсальную функцию поиска родительского элемента с указанным классом. 
@@ -200,10 +185,6 @@ loadFriends.addEventListener('click', function() {
                 rightFriendsCounter.innerHTML = allfriendsRight.length;
             }
         )
-        // .then(
-        //     // Делаем элементы двигаемыми
-        //     () => setElementDraggable('.friends_item_left_inner')
-        // )
 })
 
 document.addEventListener('click', function(e) {
@@ -357,8 +338,5 @@ window.addEventListener('load', function() {
         // массивы объектов
         allfriends = JSON.parse(localStorage.myFriends).arrayLeft;
         allfriendsRight = JSON.parse(localStorage.myFriends).arrayRight;
-        // setId(rightList.children);
-        // setId(leftList.children);
-        // setElementDraggable('.friends_item_left_inner');
     }
 })
