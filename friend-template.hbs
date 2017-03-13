@@ -1,5 +1,5 @@
 {{#each friends}}
-    <div class="one_friend">
+    <div class="one_friend" id='me{{id}}' draggable="true" ondragstart="drag(event)" ondrop="false">
         <div class="one_friend_item one_friend_item_image">
             <img class="photo" src="{{photo_100}}">
         </div>

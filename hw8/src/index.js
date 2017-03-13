@@ -80,17 +80,17 @@ function sortingById(a, b) {
 // Делаем каждый элемент "двигательным"(или двигаемым, как сказать-то) путем задания ему
 // draggable='true", а также функций, необходимых для движения элемента по экрану. 
 // HTML5 api drag-n-drop
-function setElementDraggable(elem) {
-    var whereToInsert = document.querySelector(elem);
-    var draggableElements = whereToInsert.querySelectorAll('.one_friend');
+// function setElementDraggable(elem) {
+//     var whereToInsert = document.querySelector(elem);
+//     var draggableElements = whereToInsert.querySelectorAll('.one_friend');
 
-    for (var i = 0; i < draggableElements.length; i++) {
-        draggableElements[i].setAttribute('draggable', 'true');
-        draggableElements[i].setAttribute('ondragstart', 'drag(event)');
-        draggableElements[i].setAttribute('id', i)
-        draggableElements[i].setAttribute('ondrop', 'false')
-    }
-}
+//     for (var i = 0; i < draggableElements.length; i++) {
+//         draggableElements[i].setAttribute('draggable', 'true');
+//         draggableElements[i].setAttribute('ondragstart', 'drag(event)');
+//         draggableElements[i].setAttribute('id', i)
+//         draggableElements[i].setAttribute('ondrop', 'false')
+//     }
+// }
 
 // Часто придется искать элемент с классом  .one_friend, поэтому
 // Пишем универсальную функцию поиска родительского элемента с указанным классом. 
@@ -108,27 +108,22 @@ function findParent(elem, classToFind) {
 
 /* К сожалению, еще не понял как создать универсальную для обоих случаев. см. наверх*/
 // Функция для фильтрации массива. Совпадающий элемент удалим из массива
-function removeElementFromFriendsList(arr, i) {
-    allfriendsRight.unshift(arr[i]);
-
-    return arr.splice(i, 1);
-}
-
-// Функция для фильтрации, например. Совпадающий элемент удалим из массива
-function removeElementFromFriendsListRight(arr, i) {
-    allfriends.unshift(arr[i]);
-
-    return arr.splice(i, 1);
-}
-
-// Установка атрибутов id для элементов. id будет соответствовать номеру в массиве.
-// Пригодится.
-function setId(arr) {
-    for (var i = 0; i < arr.length; i++) {
-        arr[i].setAttribute('id', i);
+function moveElementFromArr1ToArr2(fromArr, toArr, equall) {
+    for(var i = 0; i < fromArr.lengthl; i++) {
+        if(equall == 'me'+fromArr[i].id) {           
+            toArr.unshift(fromArr[i])
+            fromArr.splice(i, 1);
+        }
     }
 }
+// Функция для фильтрации, например. Совпадающий элемент удалим из массива
 
+
+// Генерация keyup 
+function eventGenerate(eventName, onElement) {
+    var newEvent = new Event(eventName);
+    onElement.dispatchEvent(newEvent);
+}
 /*
     Три функции для drag-n-drop
 */
@@ -136,6 +131,7 @@ function setId(arr) {
 // На "драггабельном" элементе вызываем функцию, которая 
 // будет получать данные об этом элементе. Такой уж стандарт HTML5 drag-n-drop
 window.drag = function(ev) {
+    console.log(ev.target.id)
     ev.dataTransfer.setData('text', ev.target.id);
 }
 
@@ -143,16 +139,24 @@ window.drop = function(ev) {
     ev.preventDefault();
     var data = ev.dataTransfer.getData('text');
 
-    ev.target.appendChild(document.getElementById(data));
+    ev.target.appendChild(document.querySelector('#' + data + ''));
 
-    removeElementFromFriendsList(allfriends, data);
+    // Удаление из левой колонки элемента с id, перетаскиваем направо
+    for(var i = 0; i < allfriends.length; i++) {
+        if(data == 'me'+allfriends[i].id) {
+            allfriendsRight.unshift(allfriends[i])
+            allfriends.splice(i,1);
+        }
+    }
+
     leftList.innerHTML = createFriendsDiv(allfriends);
-    setElementDraggable('.friends_item_left_inner');
     rightList.innerHTML = createFriendsDiv(allfriendsRight);
     leftFriendsCounter.innerHTML = allfriends.length;
     rightFriendsCounter.innerHTML = allfriendsRight.length;
-    setId(rightList.children);
-    setId(leftList.children);   
+
+    // Чтобы поисковые данные не терялись - генерируем нажатие кнопки
+    eventGenerate('keyup', inputFilterLeft);
+    eventGenerate('keyup', inputFilterRight);
 }
 
 window.allowDrop = function(ev) {
@@ -196,10 +200,10 @@ loadFriends.addEventListener('click', function() {
                 rightFriendsCounter.innerHTML = allfriendsRight.length;
             }
         )
-        .then(
-            // Делаем элементы двигаемыми
-            () => setElementDraggable('.friends_item_left_inner')
-        )
+        // .then(
+        //     // Делаем элементы двигаемыми
+        //     () => setElementDraggable('.friends_item_left_inner')
+        // )
 })
 
 document.addEventListener('click', function(e) {
@@ -209,69 +213,51 @@ document.addEventListener('click', function(e) {
         document.querySelector('.layout').classList.add('hidden');
     }
 })
-// Клик по плюсику - из левой колонки переносим карточку элементу в правую колонку
-leftList.addEventListener('click', leftPlusClick);
 
-function leftPlusClick(e) {
-    // Если target содержит класс нашей картинки-плюсика или класс блока, в котором эта картинка
+// Обработчики кликов по клюсику слева/крестику справа.
+// НОВАЯ ПЕРЕДЕЛКА ПОСЛЕ КОММЕНТАРИЕВ НАСТИ
+leftList.addEventListener('click', func);
+rightList.addEventListener('click', func);
+
+function func(e) {
+    e.preventDefault()
+    // Откуда удаляем
+    var deleteFrom;
+    // Куда помещаем
+    var insertTo;
+    // Кого перемещаем
+    var whoMove;
+    var leftlistfriends = leftList;
+    var rightlistfriends = rightList;
+
     if (e.target.classList.contains('one_friend_item_plus') || e.target.classList.contains('one_friend_item_plus_image')) {
+        if (findParent(e.target, 'friends_inner').id == 'friends_item_left_inner_block') {
+            whoMove = findParent(e.target, 'one_friend').id;
+            deleteFrom = allfriends;
+            insertTo = allfriendsRight;
+        }
+        else if (findParent(e.target, 'friends_inner').id == 'friends_item_right_inner_block') {
+            whoMove = findParent(e.target, 'one_friend').id;
+            deleteFrom = allfriendsRight;
+            insertTo = allfriends;
+            leftlistfriends = rightList;
+            rightlistfriends = leftList;
+        } 
+        for(var i = 0; i < deleteFrom.length; i++) {
+            if(whoMove == 'me'+deleteFrom[i].id) {
+                insertTo.unshift(deleteFrom[i]);
+                deleteFrom.splice(i, 1);
+            }
+        }
 
-        // ищем id кликнутого элемента(точнее его родителя)
-        var removedFromLeftNumber = findParent(e.target, 'one_friend').id;
-
-        // Удаляем кликнутый элемент из массива друзей СЛЕВА
-        removeElementFromFriendsList(allfriends, removedFromLeftNumber)
-
-        // Заполняем левую часть по шаблону из получившегося нового массива объектов        
-        leftList.innerHTML = createFriendsDiv(allfriends);
-
-        // На каждом заполнении мы будем назначать обработчики для drag-n-drop для элементов. 
-        // Левой колонки. Ато они удаляются
-        setElementDraggable('.friends_item_left_inner');
-
-        // В правую будет помещать опять ж создаваемый шаблон на основе удаленных элементов.        
-        rightList.innerHTML = createFriendsDiv(allfriendsRight);
-
-        // Установить id кадому элементу левой и правой колонки
-        setId(rightList.children);
-        setId(leftList.children);
-        // Счетчики друзей слева и справа
-        leftFriendsCounter.innerHTML = allfriends.length;
-        rightFriendsCounter.innerHTML = allfriendsRight.length;    
-
-    } else {
-        return;
-    }
-}
-
-// Клик по крестику в правой колонке - будем удалять из правой, перемещать в левую
-rightList.addEventListener('click', rightCossClick);
-
-function rightCossClick(e) {
-    if (e.target.classList.contains('one_friend_item_plus') || e.target.classList.contains('one_friend_item_plus_image')) {    
-        var removedFromRightNumber = findParent(e.target, 'one_friend').id;
-
-        // Удаляем кликнутый элемент из массива друзей СПРАВА
-        removeElementFromFriendsListRight(allfriendsRight, removedFromRightNumber);
-
-        // Заполняем левую часть по шаблону из получившегося нового массива объектов
-        
-        leftList.innerHTML = createFriendsDiv(allfriends);
-
-        setElementDraggable('.friends_item_left_inner');
-
-        // Заполняем правую часть по шаблону из получившегося нового массива объектов
-        
-        rightList.innerHTML = createFriendsDiv(allfriendsRight);
+        leftlistfriends.innerHTML = createFriendsDiv(deleteFrom);
+        rightlistfriends.innerHTML = createFriendsDiv(insertTo);
 
         leftFriendsCounter.innerHTML = allfriends.length;
         rightFriendsCounter.innerHTML = allfriendsRight.length;
 
-        setId(rightList.children);
-        setId(leftList.children);
-
-    } else {
-        return;
+        eventGenerate('keyup', inputFilterRight);
+        eventGenerate('keyup', inputFilterLeft);  
     }
 }
 
@@ -281,12 +267,6 @@ inputFilterLeft.addEventListener('keyup', function() {
     if (inputFilterLeft.value == '') {      
         // Левый список наполняется друзьями
         leftList.innerHTML = createFriendsDiv(allfriends);
-        // Делаем элементы слева двигаемыми
-        setElementDraggable('.friends_item_left_inner');
-        // Ставим id
-        setId(rightList.children);
-        setId(leftList.children);
-        // Ставим счетчик
         leftFriendsCounter.innerHTML = allfriends.length;
 
         return;
@@ -303,12 +283,6 @@ inputFilterLeft.addEventListener('keyup', function() {
     }
     // С новым массивом выведем список
     leftList.innerHTML = createFriendsDiv(newFilteredArrayLeft);
-
-    setElementDraggable('.friends_item_left_inner');
-
-    setId(rightList.children);
-    setId(leftList.children);
-
     leftFriendsCounter.innerHTML = newFilteredArrayLeft.length;
 
 })
@@ -318,12 +292,6 @@ inputFilterRight.addEventListener('keyup', function() {
     if (inputFilterRight.value == '') {
         
         rightList.innerHTML = createFriendsDiv(allfriendsRight);
-
-        setElementDraggable('.friends_item_left_inner');
-
-        setId(rightList.children);
-        setId(leftList.children);
-
         rightFriendsCounter.innerHTML = allfriendsRight.length;
 
         return;
@@ -337,12 +305,6 @@ inputFilterRight.addEventListener('keyup', function() {
         }
     }
     rightList.innerHTML = createFriendsDiv(newFilteredArrayRight);
-
-    setElementDraggable('.friends_item_left_inner');
-
-    setId(rightList.children);
-    setId(leftList.children);
-
     rightFriendsCounter.innerHTML = newFilteredArrayRight.length;
 })
 
@@ -395,8 +357,8 @@ window.addEventListener('load', function() {
         // массивы объектов
         allfriends = JSON.parse(localStorage.myFriends).arrayLeft;
         allfriendsRight = JSON.parse(localStorage.myFriends).arrayRight;
-        setId(rightList.children);
-        setId(leftList.children);
-        setElementDraggable('.friends_item_left_inner');
+        // setId(rightList.children);
+        // setId(leftList.children);
+        // setElementDraggable('.friends_item_left_inner');
     }
 })

@@ -25,8 +25,7 @@ body {
 .friends_item_left, .friends_item_right {
     height: 345px;
     overflow-y: scroll;
-    padding: 15px 10px;
-    padding-top: 0;
+    padding: 0 10px;
     position: relative;
 }
 .friends_item_left {
@@ -208,7 +207,7 @@ body {
     padding-top: 13px;
 }
 .friends_item_right_inner, .friends_item_left_inner{
-    min-height: 290px;
+    min-height: 345px;
     padding-top: 40px;
 }
 .friends_item_right_inner .one_friend{
