@@ -14,8 +14,7 @@ loaders.push({
 
 module.exports = {
     entry: {
-        main: './hw7/src/index.js',
-        cookie: './hw7/src/cookie.js'
+        main: './hw8/src/index.js',
     },
     output: {
         filename: '[chunkhash].js',
@@ -34,21 +33,23 @@ module.exports = {
         }),
         new ExtractTextPlugin('styles.css'),
         new HtmlPlugin({
-            title: 'Main Homework',
+            title: 'friends editor',
             template: 'index.hbs',
+            filename: 'index.html',
             chunks: ['main']
         }),
-        new HtmlPlugin({
-            title: 'Cookie editor',
-            template: 'cookie.hbs',
-            filename: 'cookie.html',
-            chunks: ['cookie']
+        // new HtmlPlugin({
+        //     title: 'Cookie editor',
+        //     template: 'cookie.hbs',
+        //     filename: 'cookie.html',
+        //     chunks: ['cookie']
 //             title: 'Div Drag And Drop',
 //             template: 'towns.hbs',
 //             filename: 'towns.html',
 //             chunks: ['towns']
 
-        }),
+        // }),
+
         new CleanWebpackPlugin(['dist'])
     ]
 };
