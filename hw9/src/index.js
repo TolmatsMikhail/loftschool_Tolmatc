@@ -11,64 +11,73 @@ function init(){
         zoom: 12
     });
 
-    
+    var newEvent = new Event('click');
+
+    var customBalloonFooter = ymaps.templateLayoutFactory.createClass('Любая строка');
+
+
+    var myObjectManager = new ymaps.ObjectManager({
+        clusterize: true,
+        // Опишем метку
+        geoObjectIconLayout: 'default#image',
+        iconImageHref: 'img/1.png',
+        geoObjectIconImageSize: [36, 50],
+        geoObjectCursor: 'wait',
+
+        balloonContent: 'khfhfhfhfhfhfgfhghfghghghfhjfhjfhjfhj',
+        clusterDisableClickZoom: true,
+        // Тип кластера - карусель
+        clusterBalloonContentLayout: "cluster#balloonCarousel",
+        // Количество Item'ов в кластере -карусели
+        clusterBalloonPagerSize: 6,     
+    });
+
+
+    myMap.geoObjects.add(myObjectManager);
 
     myMap.events.add('click', function(e) {   
 
-
-        var customBalloonFooter = ymaps.templateLayoutFactory.createClass(`Футер ________`)
-
-        var myObjectManager = new ymaps.ObjectManager({
-            clusterize: true,
-            // Опишем метку
-            geoObjectIconLayout: 'default#image',
-            geoObjectIconImageHref: 'img/1.png',
-            geoObjectDraggable: true,
-            geoObjectIconImageSize: [36, 50],
-            geoObjectBalloonContentFooter: customBalloonFooter, // ПОЧЕМУ ШАБЛОН НЕ ПРИМЕНЯЕТСЯ? НЕ ВСТАВЛЯЕТСЯ СЮДА!
-            
-
-            // По клику на кластер - не увеличиваем карту
-            clusterDisableClickZoom: true,
-            // Тип кластера - карусель
-            clusterBalloonContentLayout: "cluster#balloonCarousel",
-            // Количество Item'ов в кластере -карусели
-            clusterBalloonPagerSize: 6,
-        });
-
-
-        myMap.geoObjects.add(myObjectManager);
-
-
         var coordinates = e.get('coords');
 
-        // var a = ymaps.geocode([55.75, 37.62]).then(function(res) {
-        //     var a = res.geoObjects.get(0).properties.get('name');
-        //     return a;
-        // })      
-    
+        var footerTemplate = ymaps.templateLayoutFactory.createClass('<p>Какой-то абзац</p>', {
+            build: function (event) {
+                this.constructor.superclass.build.call(this);
+                this.balloonContainer = this.getParentElement().parentNode;
+                this.balloon = document.querySelector('.ymaps-2-1-48-balloon__content');
+                this.balloon.querySelector('.ymaps-2-1-48-balloon__close-button').addEventListener('click', this.closeBalloon.bind(this) );
+            }
+        })
+
         var feature = {
-            "type": "Feature",
             'id': counter++,
+            "type": "Feature",            
             "geometry": {
                 "type": "Point",
                 "coordinates": coordinates
             },
             'properties': {
-                "hintContent": "Текст подсказки",
-                "balloonContentHeader": 'ХЕДЕР',
-                "balloonContentBody": 'Боди',
-                // balloonContentFooter: customBalloonFooter // СЮДА ПОПАДАЕТ ФУНКЦИЯ В ГОЛОМ ВИДЕ, ТОЧНЕЕ ЕЕ КОД, ПОЧЕМУ?
+                // balloonContentFooter: 'footerTemplate', // СЮДА ПОПАДАЕТ ФУНКЦИЯ В ГОЛОМ ВИДЕ, ТОЧНЕЕ ЕЕ КОД, ПОЧЕМУ?
+                // balloonContent: 'Содержимеофдвпыщфропв',
+                // hintContent: 'Текст всплывающей подсказки',
             },
             // Это будут отзывы в этой feature
-            // 'feedbacks': {
-            //     name: 'Vasya'
-            // }
+            'feedbacks': {
+                name: 'Vasya'
+            }
         }
 
-
+        feature.properties.balloonContentFooter;
+        console.log(ymaps.templateLayoutFactory.createClass('<p>Текст</p>'))
+// В шапку пишем Название Адреса
+        ymaps.geocode(coordinates).then(function(res) {
+            var a = res.geoObjects.get(0).properties.get('name');
+            feature.properties.balloonContentHeader = '<img src="img/3.png" alt="">'+a;
+        })
+/*
         myObjectManager.objects.events.add('click', function(e) {
+            // Ловим конкретный объект
             var placemarkID = e.get('objectId');
+            // 
             var overlay = myObjectManager.objects.overlays.getById(placemarkID);
             // Это лежит в контенте боди
             var toChtoLEzhitVBODI = overlay.getData().properties.balloonContentBody;
@@ -76,7 +85,7 @@ function init(){
             var allThisPlaceFeedbacks = overlay.getData().feedbacks;
             
         })
-
+*/
         myObjects.push(feature);
 
         var collection = {
