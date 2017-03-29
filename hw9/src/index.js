@@ -11,67 +11,65 @@ function init(){
         zoom: 12
     });
 
-    var newEvent = new Event('click');
-
-    var customBalloonFooter = ymaps.templateLayoutFactory.createClass('Любая строка');
-
-
     var myObjectManager = new ymaps.ObjectManager({
-        clusterize: true,
-        // Опишем метку
-        geoObjectIconLayout: 'default#image',
-        iconImageHref: 'img/1.png',
-        geoObjectIconImageSize: [36, 50],
-        geoObjectCursor: 'wait',
-
-        balloonContent: 'khfhfhfhfhfhfgfhghfghghghfhjfhjfhjfhj',
-        clusterDisableClickZoom: true,
-        // Тип кластера - карусель
-        clusterBalloonContentLayout: "cluster#balloonCarousel",
-        // Количество Item'ов в кластере -карусели
-        clusterBalloonPagerSize: 6,     
+        clusterize: true,  // кластеризация ВКЛ
+        geoObjectIconLayout: 'default#image', // хрен знает что это
+        iconImageHref: 'img/1.png', // Картинка для метки отработала, показывается как надо
+        geoObjectIconImageSize: [36, 50], // Размер картинки тоже отработал как ни странно
+        clusterDisableClickZoom: true, // По клику на кластер НЕТ зума
+        clusterBalloonContentLayout: "cluster#balloonCarousel", // кластер у нас типа карусель
+        clusterBalloonPagerSize: 6,     // Количество элементов в кластере карусели (на одну страницу)
     });
 
 
+
+// Для того чтобы отобразить объекты на карте, необходимо добавить менеджер в коллекцию объектов карты.
     myMap.geoObjects.add(myObjectManager);
 
     myMap.events.add('click', function(e) {   
-
         var coordinates = e.get('coords');
+        var customBallon = ymaps.templateLayoutFactory.createClass('<p>$[properties.myAdressHeader]</p>');
 
-        var footerTemplate = ymaps.templateLayoutFactory.createClass('<p>Какой-то абзац</p>', {
-            build: function (event) {
-                this.constructor.superclass.build.call(this);
-                this.balloonContainer = this.getParentElement().parentNode;
-                this.balloon = document.querySelector('.ymaps-2-1-48-balloon__content');
-                this.balloon.querySelector('.ymaps-2-1-48-balloon__close-button').addEventListener('click', this.closeBalloon.bind(this) );
-            }
-        })
+        myObjectManager.objects.options.set({
+            // В customBallon надо отрисовать все 
+            balloonContentLayout: customBallon,
+            // Кластер контент лэйоут
+            // 
+        }) 
 
-        var feature = {
-            'id': counter++,
-            "type": "Feature",            
-            "geometry": {
-                "type": "Point",
-                "coordinates": coordinates
-            },
-            'properties': {
-                // balloonContentFooter: 'footerTemplate', // СЮДА ПОПАДАЕТ ФУНКЦИЯ В ГОЛОМ ВИДЕ, ТОЧНЕЕ ЕЕ КОД, ПОЧЕМУ?
-                // balloonContent: 'Содержимеофдвпыщфропв',
-                // hintContent: 'Текст всплывающей подсказки',
-            },
-            // Это будут отзывы в этой feature
-            'feedbacks': {
-                name: 'Vasya'
-            }
-        }
 
-        feature.properties.balloonContentFooter;
 // В шапку пишем Название Адреса
         ymaps.geocode(coordinates).then(function(res) {
             var a = res.geoObjects.get(0).properties.get('name');
-            feature.properties.balloonContentHeader = '<img src="img/3.png" alt="">'+a;
+            // feature.properties.balloonContentHeader = '<img src="img/3.png" alt="">'+a;
+
+            var feature = {
+                type: "Feature",
+                id: counter++,                        
+                geometry: {
+                    type: "Point",
+                    coordinates: coordinates
+                },
+
+                // Здесь просто какие-то данные, к которым можно обратиться
+                properties: {
+                // Получили адрес
+                    myAdressHeader: a,
+                }
+            }
+
+            myObjects.push(feature);
+
+            var collection = {
+                "type": "FeatureCollection",
+                "features": myObjects
+            }
+
+            myObjectManager.removeAll().add(collection);
+
         })
+
+
 /*
         myObjectManager.objects.events.add('click', function(e) {
             // Ловим конкретный объект
@@ -84,18 +82,7 @@ function init(){
             var allThisPlaceFeedbacks = overlay.getData().feedbacks;
             
         })
-*/
-        myObjects.push(feature);
-
-        var collection = {
-            "type": "FeatureCollection",
-            "features": myObjects
-        };
-
-        myObjectManager.removeAll().add(collection);
-
-        // console.log(myObjectManager.objects.balloon.events);
-
+*/        
     })
 }
 
