@@ -34,7 +34,7 @@ function init(){
         clusterBalloonPanelMaxMapArea: 0,
         // Устанавливаем размеры макета контента балуна (в пикселях).
         clusterBalloonContentLayoutWidth: 200,
-        clusterBalloonContentLayoutHeight: 550,
+
         // Устанавливаем максимальное количество элементов в нижней панели на одной странице
         clusterBalloonPagerSize: 5
     });
@@ -103,7 +103,6 @@ function init(){
 
 // Добавляем кластер в геообъект
         myMap.geoObjects.add(clusterer);
-
 
     })    
 }
