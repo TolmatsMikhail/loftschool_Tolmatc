@@ -19,6 +19,8 @@ function init(){
     );
 
 
+
+
     // Создал кластер. Срисовал с примера яндекса
     var clusterer = new ymaps.Clusterer({
         clusterDisableClickZoom: true,
@@ -37,30 +39,58 @@ function init(){
         clusterBalloonPagerSize: 5
     });
 
+    // var MyBalloonContentLayoutClass = ymaps.templateLayoutFactory.createClass(
+    //     '<h3>Теоретически, это должен быть лэйаут балуна</p>' 
+    // );
+
+    // var balloon = new ymaps.Balloon(myMap, {
+    //     autoPan : true,
+    //     closeButton: true,
+    //     balloonContentLayout: MyBalloonContentLayoutClass
+    // });
+
+    // balloon.options.setParent(myMap.options);
+    // balloon.setData('dataaaaaaa');
+
+    // Делаю метку. точнее стилизую
+    myMap.events.add('click', function(e) {     
+        var coords = e.get('coords');
+        var geoObject = e.get('target');
+        // Открыть балун по клику на карте
+        // balloon.open(coords);
+        // Автосмещение балуна
+        // balloon.autoPan();
+
+        // balloon.getData();
 
     
 
-    // Делаю метку. точнее стилизую
-    myMap.events.add('click', function(e) {
-        var coords = e.get('coords');
-        var geoObject = e.get('target');
-
+ // Создаем новую метку  
         myPlacemark = new ymaps.Placemark(coords, {
             balloonContent: '<div class="balonblock_leavefeed"><p class="balonblock_leavefeed_title">Ваш отзыв</p><input type="text" placeholder="Ваше имя" class="yourname baloonInput"><input type="text" placeholder="Укажите место" class="yourplace baloonInput"><textarea placeholder="Поделитесь вашими впечатлениями" class="yourminds baloonInput"></textarea></div>',
             balloonContentFooter: '<span class="balonblock_leavefeed_add_btn">Добавить</span>',
-        }, {
-            // Опции.
-            // Необходимо указать данный тип макета.
-            iconLayout: 'default#image',
-            // Своё изображение иконки метки.
-            iconImageHref: 'img/1.png',
-            // Размеры метки.
-            iconImageSize: [30, 42],
-            // Смещение левого верхнего угла иконки относительно
-            // её "ножки" (точки привязки).
-            iconImageOffset: [-5, -38]
-        });
-
+            }, {
+                // Опции.
+                // Необходимо указать данный тип макета.
+                iconLayout: 'default#image',
+                // Своё изображение иконки метки.
+                iconImageHref: 'img/1.png',
+                // Размеры метки.
+                iconImageSize: [30, 42],
+                // Смещение левого верхнего угла иконки относительно
+                // её "ножки" (точки привязки).
+                iconImageOffset: [-5, -38]
+            }
+        );
+// Поведение метки при наведении курсора на нее
+        myPlacemark.events
+            .add('mouseenter', function(e) {
+                e.get('target').options.set('iconImageHref', 'img/1_orange.png')
+            })
+            .add('mouseleave', function(e) {
+                e.get('target').options.set('iconImageHref', 'img/1.png')
+            })
+// Задаем метке адрес. В Хедер пишем адрес
         ymaps.geocode(coords).then(function(res) {
             var a = res.geoObjects.get(0).properties.get('name');
             myPlacemark.properties.set({
@@ -68,10 +98,13 @@ function init(){
             })
         })
 
+// Добавляем метку в кластер
+        clusterer.add(myPlacemark); 
 
-        clusterer.add(myPlacemark);
-
+// Добавляем кластер в геообъект
         myMap.geoObjects.add(clusterer);
+
+
     })    
 }
 
