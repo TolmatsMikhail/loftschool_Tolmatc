@@ -67,7 +67,6 @@ function init(){
         }
 
         feature.properties.balloonContentFooter;
-        console.log(ymaps.templateLayoutFactory.createClass('<p>Текст</p>'))
 // В шапку пишем Название Адреса
         ymaps.geocode(coordinates).then(function(res) {
             var a = res.geoObjects.get(0).properties.get('name');
@@ -94,6 +93,8 @@ function init(){
         };
 
         myObjectManager.removeAll().add(collection);
+
+        // console.log(myObjectManager.objects.balloon.events);
 
     })
 }
