@@ -24,19 +24,21 @@ function init(){
 
 
 // Для того чтобы отобразить объекты на карте, необходимо добавить менеджер в коллекцию объектов карты.
+
     myMap.geoObjects.add(myObjectManager);
 
     myMap.events.add('click', function(e) {   
         var coordinates = e.get('coords');
         var customBallon = ymaps.templateLayoutFactory.createClass('<p>$[properties.myAdressHeader]</p>');
 
+        var customCluster = ymaps.templateLayoutFactory.createClass('<p>$[properties.myAdressHeader]</p>');
+
         myObjectManager.objects.options.set({
             // В customBallon надо отрисовать все 
             balloonContentLayout: customBallon,
             // Кластер контент лэйоут
-            // 
-        }) 
-
+            clusterContentLayout: customCluster
+    }) 
 
 // В шапку пишем Название Адреса
         ymaps.geocode(coordinates).then(function(res) {
