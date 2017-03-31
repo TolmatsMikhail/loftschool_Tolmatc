@@ -31,15 +31,11 @@ ymaps > .balonblock{
     vertical-align: top;
     margin-right: 8px;
 }
-.balonblock_top img:last-child{
-    display: block;
-    float: right;
-    cursor: pointer;
-}
+
 .balonblock_existfeedback{
     padding: 0;
     color: #4f4f4f;
-    max-height: 128px;
+    height: 128px;
     border-bottom: 1px solid #f7f7f7;
     overflow-y:scroll;
 }
@@ -93,11 +89,11 @@ ymaps > .balonblock{
 #map .ymaps-2-1-48-balloon-content__footer{
     text-align: left;          
 }
-#map .ymaps-2-1-48-balloon-content__footer .balonblock_leavefeed_add{
+.balonblock_leavefeed_add{
     text-align: right;
     display: block;
 }
-#map .ymaps-2-1-48-balloon-content__footer .balonblock_leavefeed_add_btn{
+.balonblock_leavefeed_add_btn{
     display: inline-block;
     vertical-align: top;
     border-radius: 10px;
@@ -109,7 +105,7 @@ ymaps > .balonblock{
     text-align: center;
     cursor: pointer;
 }
-#map .ymaps-2-1-48-balloon-content__header{
+.balonblock_top{
     background-color: #ff8663;
     padding: 15px;
     color: white;

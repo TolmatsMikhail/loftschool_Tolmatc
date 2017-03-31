@@ -11,6 +11,15 @@ function init(){
         zoom: 12
     });
 
+
+var customCluster = ymaps.templateLayoutFactory.createClass(`
+
+
+{{properties.myAdressHeader}}
+
+
+    `);
+
     var myObjectManager = new ymaps.ObjectManager({
         clusterize: true,  // кластеризация ВКЛ
         geoObjectIconLayout: 'default#image', // хрен знает что это
@@ -19,6 +28,7 @@ function init(){
         clusterDisableClickZoom: true, // По клику на кластер НЕТ зума
         clusterBalloonContentLayout: "cluster#balloonCarousel", // кластер у нас типа карусель
         clusterBalloonPagerSize: 6,     // Количество элементов в кластере карусели (на одну страницу)
+        clusterBalloonItemContentLayout: customCluster
     });
 
 
@@ -29,16 +39,50 @@ function init(){
 
     myMap.events.add('click', function(e) {   
         var coordinates = e.get('coords');
-        var customBallon = ymaps.templateLayoutFactory.createClass('<p>$[properties.myAdressHeader]</p>');
 
-        var customCluster = ymaps.templateLayoutFactory.createClass('<p>$[properties.myAdressHeader]</p>');
+// Шаблон балуна
+        var customBallon = ymaps.templateLayoutFactory.createClass(`
+            <div class="balonblock_top">
+                <img src="img/3.png" alt="">
+                {{properties.myAdressHeader}}
+            </div>
+            <div class="balonblock_existfeedback">
+    
+                {% for a in properties.feedbacks %} 
+                    {{ a.name }}
+                    {{ a.place }}
+                    {{ a.date }} 
+                    <div></div>
+                    {{ a.text }}
+                    <div></div>
+                {% endfor %}
+             
+            </div>
+            <div class="balonblock_leavefeed">
+                <p class="balonblock_leavefeed_title">
+                    Ваш отзыв
+                </p>
+
+                <input type="text" placeholder="Ваше имя" class="yourname baloonInput">
+                <input type="text" placeholder="Укажите место" class="yourplace baloonInput">
+                <textarea placeholder="Поделитесь вашими впечатлениями" class="yourminds baloonInput"></textarea>
+
+                <div class="balonblock_leavefeed_add">
+                    <span class="balonblock_leavefeed_add_btn">
+                        Добавить
+                    </span>
+                </div>
+            </div>`);
+
+        // 
 
         myObjectManager.objects.options.set({
             // В customBallon надо отрисовать все 
-            balloonContentLayout: customBallon,
-            // Кластер контент лэйоут
-            clusterContentLayout: customCluster
-    }) 
+            balloonContentLayout: customBallon
+        }) 
+
+
+
 
 // В шапку пишем Название Адреса
         ymaps.geocode(coordinates).then(function(res) {
@@ -57,6 +101,20 @@ function init(){
                 properties: {
                 // Получили адрес
                     myAdressHeader: a,
+                    feedbacks: [
+                        {
+                            name: 'Вася',
+                            place: 'Шоколадница',
+                            date: '02.03.2017',
+                            text: 'Какой-то текст'
+                        },
+                        {
+                            name: 'Коля',
+                            place: 'В жопе какой-то',
+                            date: '02.03.2017',
+                            text: 'Какой-то текст'
+                        },
+                    ]
                 }
             }
 
@@ -68,6 +126,12 @@ function init(){
             }
 
             myObjectManager.removeAll().add(collection);
+
+// Открываем по клику текущий балун сразу же!
+            var overlay = myObjectManager.objects.getById(feature.id);
+
+            // myObjectManager.objects.balloon.open(overlay.id)
+
 
         })
 
