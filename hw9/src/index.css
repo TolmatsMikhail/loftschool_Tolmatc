@@ -149,3 +149,21 @@ ymaps > .balonblock{
 #map .ymaps-2-1-48-balloon__tail{
     display: none;
 }
+.clusterBalloon{
+    position: relative;
+    height: 155px;
+}
+.thisadressgotoballoon{
+    color: blue;
+    text-decoration: underline;
+}
+.clusterDate{
+    position: absolute;
+    left: 0;
+    bottom: 0;
+    width: 100%;
+    color: gray; 
+    font-size: 16px;
+    line-height: 20px;
+    text-align: right;
+}
