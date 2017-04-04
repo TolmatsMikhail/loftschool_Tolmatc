@@ -152,10 +152,13 @@ ymaps > .balonblock{
 .clusterBalloon{
     position: relative;
     height: 155px;
+    font-size: 18px;  
+    line-height: 22px;
 }
 .thisadressgotoballoon{
     color: blue;
     text-decoration: underline;
+    cursor: pointer;
 }
 .clusterDate{
     position: absolute;
@@ -166,4 +169,17 @@ ymaps > .balonblock{
     font-size: 16px;
     line-height: 20px;
     text-align: right;
+}
+#map .closeButtonForCluster{
+    background: url('https://cdn4.iconfinder.com/data/icons/basic-12/614/6_-_Cross-128.png');
+    background-repeat: no-repeat;
+    background-position: center center;
+    -webkit-background-size: 100%;
+    background-size: 100%;
+}
+#map .thereIsNoFeedbacks{
+    font-size: 18px;
+    line-height: 22px;
+    font-weight: bold;
+    padding: 20px;
 }
