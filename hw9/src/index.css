@@ -183,3 +183,29 @@ ymaps > .balonblock{
     font-weight: bold;
     padding: 20px;
 }
+#homework-container{
+    position: relative;
+}
+.map__storage-buttons{
+    line-height: 42px;
+    font-size: 16px;
+    padding: 0 30px;
+    text-align: center;
+    position: fixed;
+    bottom: 100px;
+    right: 100px;
+    background-color: #ff8663;
+    border-radius: 5px;
+    width: 300px;
+    color: #ffffff;
+    cursor: pointer;
+    transition: all 150ms linear;
+}
+.map__storage-buttons:hover{
+    background-color: #ff9a7d;
+    transition: all 150ms linear;
+}
+
+#saveTolocalStorage{
+    bottom: 150px;
+}

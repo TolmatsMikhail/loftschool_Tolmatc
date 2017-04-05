@@ -8,11 +8,37 @@ var collection;
 var myObjectManager;
 var feature;
 
+
+var saveTolocalStorageButton = document.querySelector('#saveTolocalStorage');
+var savedPlacemarks;
+
+
+var cleanLocalStorage = document.querySelector('#cleanLocalStorage');
+
+saveTolocalStorageButton.addEventListener('click', function(e) {
+
+    var data = {
+        allFeatures: myObjects
+    }
+
+    localStorage.placemarks = JSON.stringify(data);
+})
+
+// Очистка локалсторадж
+cleanLocalStorage.addEventListener('click', function(e) {
+    localStorage.clear();
+})
+
+
 function init() {     
     myMap = new ymaps.Map('map', {
         center: [55.75, 37.62],
         zoom: 12
     });
+
+    // if(localStorage.length > 0) {
+    //     console.log('В локал сторадж что-то есть')
+    // };
 
     var customCluster = ymaps.templateLayoutFactory.createClass(
         // Кастомизация балуна кластера типа карусель
@@ -87,13 +113,9 @@ function init() {
    
     // Для того чтобы отобразить объекты на карте, необходимо добавить менеджер в коллекцию объектов карты.
     myMap.geoObjects.add(myObjectManager);
-    // Слушаем клик по карте
-    myMap.events.add('click', function(e) {
-        // Получаем координаты точки на карте, координаты клика
-        var coordinates = e.get('coords');
 
-        // Шаблон балуна
-        var BalloonContentLayout = ymaps.templateLayoutFactory.createClass(
+            // Шаблон балуна
+    var BalloonContentLayout = ymaps.templateLayoutFactory.createClass(
             `<div class="myGoodBalloon">
                 <div class="balonblock_top">
                     <img src="img/3.png" alt="">
@@ -283,17 +305,39 @@ function init() {
                     myObjectManager.removeAll().add(collection);
                 }
             });
+    
+    // Устанавливаем шаблон для балуна. Почему-то,
+    // при создании objectManager эти опции не задавались
+    // Поэтому задаем их вот так
+    myObjectManager.objects.options.set({
+        // В customBallon надо отрисовать все 
+        balloonContentLayout: BalloonContentLayout,
+        balloonMinHeight: 530   // чтобы как в макете. 
+                                // не повлияет на высоту балуна кластера типа карусель
+    })
 
-        // Устанавливаем шаблон для балуна. Почему-то,
-        // при создании objectManager эти опции не задавались
-        // Поэтому задаем их вот так
-        myObjectManager.objects.options.set({
-            // В customBallon надо отрисовать все 
-            balloonContentLayout: BalloonContentLayout,
-            balloonMinHeight: 530   // чтобы как в макете. 
-                                    // не повлияет на высоту балуна кластера типа карусель
-        })
+    if (localStorage.length > 0) {
 
+        savedPlacemarks = JSON.parse(localStorage.placemarks).allFeatures;
+
+        for (var i = 0; i < savedPlacemarks.length; i++) {
+            myObjects.push(savedPlacemarks[i]);
+        }
+
+        collection = {
+            'type': 'FeatureCollection',
+            'features': myObjects
+        }
+
+        myObjectManager.removeAll().add(collection);
+    }
+
+
+
+    // Слушаем клик по карте
+    myMap.events.add('click', function(e) {
+        // Получаем координаты точки на карте, координаты клика
+        var coordinates = e.get('coords');
         // Ассинхронный запрос координат с помещением их в шапку создаваемой фичи.
         ymaps.geocode(coordinates).then(function(res) {
             var thisAdress = res.geoObjects.get(0).properties.get('name');
