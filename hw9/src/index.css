@@ -1,0 +1,211 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+#map .ymaps-2-1-48-balloon__layout, .balonblock{
+    width: 380px;
+    border-radius: 10px;
+    overflow: hidden;
+    margin: 0 auto;
+    -webkit-box-shadow: 0px 0px 1px 1px rgba(128,128,128,1);
+    -moz-box-shadow: 0px 0px 1px 1px rgba(128,128,128,1);
+    box-shadow: 0px 0px 1px 1px rgba(128,128,128,1);
+    position: absolute;
+    top: 0;
+    left: 0;
+    background-color: #fff;
+    /*display: none;                */
+}
+.show{
+    display: block;
+}
+ymaps > .balonblock{
+    display: block;
+}
+
+.balonblock_top img{
+    vertical-align: top;
+    display: inline-block;
+    vertical-align: top;
+    margin-right: 8px;
+}
+
+.balonblock_existfeedback{
+    padding: 0;
+    color: #4f4f4f;
+    height: 128px;
+    border-bottom: 1px solid #f7f7f7;
+    overflow-y:scroll;
+}
+.balonblock_existfeedback_item:last-child{
+    margin-bottom: 0;
+}
+.balonblock_existfeedback_item{
+    display: inline-block;
+    vertical-align: top;
+    font-size: 14px;
+    line-height: 16px;
+    margin-bottom: 0;
+    padding: 5px;
+}
+.balonblock_existfeedback_item_name{
+    font-weight: bold;
+}
+.balonblock_existfeedback_item_place{
+    margin-right: 10px;
+}
+.balonblock_leavefeed{
+    padding: 16px 13px;
+}
+.balonblock_leavefeed_title{
+    font-size: 16px;
+    line-height: 16px;
+    color: #ff8663;
+    text-transform: uppercase;
+    margin-bottom: 15px;
+}
+.baloonInput{
+    outline: none; 
+    border: 1px solid #c4c4c4;
+    border-radius: 10px;
+    padding: 9px 15px;
+    font-size: 12px;
+    line-height: 12px;
+    display: block;
+    width: 100%;
+    margin-bottom: 15px;
+}
+.yourminds{
+    font-size: 14px;
+    height: 130px;
+    resize: none;
+}
+#map .ymaps-2-1-48-balloon-content__footer{
+    text-align: left;          
+}
+.balonblock_leavefeed_add{
+    text-align: right;
+    display: block;
+}
+.balonblock_leavefeed_add_btn{
+    display: inline-block;
+    vertical-align: top;
+    border-radius: 10px;
+    background-color: #ff8663;
+    color: white;
+    font-size: 14px;
+    padding: 10px 0;
+    width: 85px;
+    text-align: center;
+    cursor: pointer;
+}
+.balonblock_top{
+    background-color: #ff8663;
+    padding: 15px;
+    color: white;
+    font-size: 12px;
+    line-height: 16px;
+    margin-bottom: 0;
+}
+#map .ymaps-2-1-48-balloon__content{
+    margin: 0;
+    padding: 0;
+    /*height: 550px;*/
+}
+#map .ymaps-2-1-48-balloon__content > ymaps {
+    width: 100% !important;
+    /*height: 550px !important;*/
+}
+#map .ymaps-2-1-48-map ymaps, 
+#map .ymaps-2-1-48-map ymaps:after, 
+#map .ymaps-2-1-48-map ymaps:before{
+    box-sizing: border-box;
+}
+#map .ymaps-2-1-48-balloon{
+    box-shadow: initial;
+}
+
+
+#map .ymaps-2-1-48-balloon-content__header img{
+    vertical-align: top;
+    display: inline-block;
+    vertical-align: top;
+    margin-right: 8px;
+}
+#map .ymaps-2-1-48-balloon__close-button{
+    background: url("http://ipic.su/img/img7/fs/cross.1490777906.png");
+    background-repeat: no-repeat;
+    background-position: center;
+    opacity: 1;
+}
+#map{
+    width: 100%;
+    height: 1042px;
+    border: 1px solid red;
+}
+
+#map .ymaps-2-1-48-balloon__tail{
+    display: none;
+}
+.clusterBalloon{
+    position: relative;
+    height: 155px;
+    font-size: 18px;  
+    line-height: 22px;
+}
+.thisadressgotoballoon{
+    color: blue;
+    text-decoration: underline;
+    cursor: pointer;
+}
+.clusterDate{
+    position: absolute;
+    left: 0;
+    bottom: 0;
+    width: 100%;
+    color: gray; 
+    font-size: 16px;
+    line-height: 20px;
+    text-align: right;
+}
+#map .closeButtonForCluster{
+    background: url('https://cdn4.iconfinder.com/data/icons/basic-12/614/6_-_Cross-128.png');
+    background-repeat: no-repeat;
+    background-position: center center;
+    -webkit-background-size: 100%;
+    background-size: 100%;
+}
+#map .thereIsNoFeedbacks{
+    font-size: 18px;
+    line-height: 22px;
+    font-weight: bold;
+    padding: 20px;
+}
+#homework-container{
+    position: relative;
+}
+.map__storage-buttons{
+    line-height: 42px;
+    font-size: 16px;
+    padding: 0 30px;
+    text-align: center;
+    position: fixed;
+    bottom: 100px;
+    right: 100px;
+    background-color: #ff8663;
+    border-radius: 5px;
+    width: 300px;
+    color: #ffffff;
+    cursor: pointer;
+    transition: all 150ms linear;
+}
+.map__storage-buttons:hover{
+    background-color: #ff9a7d;
+    transition: all 150ms linear;
+}
+
+#saveTolocalStorage{
+    bottom: 150px;
+}

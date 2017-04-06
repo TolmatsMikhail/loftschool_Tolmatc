@@ -3,11 +3,22 @@
 <head>
     <meta charset="UTF-8">
     <title>{{htmlWebpackPlugin.options.title}}</title>
+    <script src="https://api-maps.yandex.ru/2.1/?lang=ru-RU" type="text/javascript"></script>
 </head>
 <body>
 <div id="homework-container">
-    {{> "./index-content.hbs"}}
+    <div id="map">
+		
+	</div>
     
+
+    <div id="saveTolocalStorage" class="map__storage-buttons">
+    	Сохранить состояние карты
+    </div>
+
+    <div id="cleanLocalStorage" class="map__storage-buttons">
+    	Очистить состояние карты
+    </div>
 
 </body>
 </html>
