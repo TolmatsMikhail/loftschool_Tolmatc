@@ -7,12 +7,8 @@ var counter = 0;
 var collection; 
 var myObjectManager;
 var feature;
-
-
 var saveTolocalStorageButton = document.querySelector('#saveTolocalStorage');
 var savedPlacemarks;
-
-
 var cleanLocalStorage = document.querySelector('#cleanLocalStorage');
 
 saveTolocalStorageButton.addEventListener('click', function(e) {
@@ -27,8 +23,8 @@ saveTolocalStorageButton.addEventListener('click', function(e) {
 // Очистка локалсторадж
 cleanLocalStorage.addEventListener('click', function(e) {
     localStorage.clear();
+    window.location.reload();
 })
-
 
 function init() {     
     myMap = new ymaps.Map('map', {
@@ -53,51 +49,55 @@ function init() {
             </div>
         </div>`,
         {
-        build: function() {
-            customCluster.superclass.build.call(this);
-            // Ищем layout балуна кластера
-            var a = findParent( this._parentElement.parentNode, 'ymaps-2-1-48-balloon__layout');
-            // ищем кнопку, которая закрывает балун кластера
-            var closeClusterButton = a.querySelector('.ymaps-2-1-48-balloon__close-button');
-            // и добавляем ей класс, чтобы крестик стилизовать
-            closeClusterButton.classList.add('closeButtonForCluster');
-            // Выбираем слова (т.е. адрес), которые ведут к конкретному балуну(слушаем клик по ним)
-            var clickToGoToBalloon = this._parentElement.querySelector('.thisadressgotoballoon');
-            clickToGoToBalloon.addEventListener('click', this.onAdressClick);
-        },
-        clear: function() {
-            var clickToGoToBalloon = this._parentElement.querySelector('.thisadressgotoballoon');
-            clickToGoToBalloon.removeEventListener('click', this.onAdressClick);
-            customCluster.superclass.clear.call(this);
-        },
-        onAdressClick: function(e) {
-            // Кликнутый адрес
-            var clickedAdress = e.target.innerHTML.trim();
-            // Смотрим всю коллекцию отзывов
-            var thisClusterCollection = myObjectManager.clusters.balloon.getData();
-            // Пустой массив(изначально) со всеми адресами
-            var adresses = [];
-            // id отзывов
-            var ids = [];
-            // id того балуна, который будем открывать по клику на конкретный адрес
-            var idToOpenBalloon;
-            // Соберем все адреса и все id
-            for(var i = 0; i < thisClusterCollection.features.length; i++) {
-                adresses.push(thisClusterCollection.features[i].properties.myAdressHeader)
-                ids.push(thisClusterCollection.features[i].id);
+            build: function() {
+                customCluster.superclass.build.call(this);
+                // Ищем layout балуна кластера
+                var a = findParent( this._parentElement.parentNode, 'ymaps-2-1-48-balloon__layout');
+                // ищем кнопку, которая закрывает балун кластера
+                var closeClusterButton = a.querySelector('.ymaps-2-1-48-balloon__close-button');
+
+                // и добавляем ей класс, чтобы крестик стилизовать
+                closeClusterButton.classList.add('closeButtonForCluster');
+                // Выбираем слова (т.е. адрес), которые ведут к конкретному балуну(слушаем клик по ним)
+                var clickToGoToBalloon = this._parentElement.querySelector('.thisadressgotoballoon');
+
+                clickToGoToBalloon.addEventListener('click', this.onAdressClick);
+            },
+            clear: function() {
+                var clickToGoToBalloon = this._parentElement.querySelector('.thisadressgotoballoon');
+
+                clickToGoToBalloon.removeEventListener('click', this.onAdressClick);
+                customCluster.superclass.clear.call(this);
+            },
+            onAdressClick: function(e) {
+                // Кликнутый адрес
+                var clickedAdress = e.target.innerHTML.trim();
+                // Смотрим всю коллекцию отзывов
+                var thisClusterCollection = myObjectManager.clusters.balloon.getData();
+                // Пустой массив(изначально) со всеми адресами
+                var adresses = [];
+                // id отзывов
+                var ids = [];
+                // id того балуна, который будем открывать по клику на конкретный адрес
+                var idToOpenBalloon;
+
+                // Соберем все адреса и все id
+                for (var i = 0; i < thisClusterCollection.features.length; i++) {
+                    adresses.push(thisClusterCollection.features[i].properties.myAdressHeader)
+                    ids.push(thisClusterCollection.features[i].id);
+                }
+                // Если кликнутый адрес совпадает с адресом коллекции(иначе и быть не может), то берем его id
+                for ( var k = 0; k < adresses.length; k++) {
+                    if (adresses[k] == clickedAdress) {
+                        idToOpenBalloon = ids[k];
+                        break;
+                    }
+                }
+                // и по взятому id открываем балун
+                myObjectManager.objects.balloon.open(idToOpenBalloon);
             }
-            // Если кликнутый адрес совпадает с адресом коллекции(иначе и быть не может), то берем его id
-            for( var k = 0; k < adresses.length; k++) {
-                if(adresses[k] == clickedAdress) {
-                    idToOpenBalloon = ids[k];
-                    break;
-                };
-            }
-            // и по взятому id открываем балун
-            myObjectManager.objects.balloon.open(idToOpenBalloon);
-     
-        }
-    });
+        });
+
     // Создание и кастомизация объект-менеджера
     myObjectManager = new ymaps.ObjectManager({
         clusterize: true,  // кластеризация ВКЛ
@@ -201,6 +201,7 @@ function init() {
                     var year = now.getFullYear();
                     // Какой месяц? нумеерация с нуля, поэтому + 1. Если будет 13, то date сам пеерсчитает
                     var month = now.getMonth() + 1;
+
                     if ( month < 10) {
                         month = '0' + month;
                     }
@@ -212,11 +213,13 @@ function init() {
                     }
                     // Сколько часов?
                     var hour = now.getHours();
+
                     if ( hour < 10) {
                         hour = '0' + hour;
                     }
                     // Минут?
                     var minutes = now.getMinutes();
+
                     if ( minutes < 10) {
                         minutes = '0' + minutes;
                     }
@@ -226,6 +229,7 @@ function init() {
                     var feature = myObjectManager.objects.balloon.getData();
                     // Длина "отзывов/вечатлений". Для проверки а есть ли они там вообще
                     var firstFeatureLength = feature.properties.feedbacks.length;
+
                     // Если нет отзывов вообще никаких в фиче
                     if (firstFeatureLength < 1 ) {
                         if (name && place && text) {
@@ -273,6 +277,7 @@ function init() {
                                 }]
                             }
                         }
+
                         // Добавим новую фичу в массив фич
                         myObjects.push(feature2);
                         // Массив фич в коллекцию
@@ -286,6 +291,7 @@ function init() {
 
                     // Тут же откроем фичу. Пользователю не видно, но экран польностью обновился.
                     var overlay = myObjectManager.objects.getById(feature.id);
+
                     myObjectManager.objects.balloon.open(overlay.id);
                 },
                 onCloseButtonClick: function() {
@@ -293,7 +299,7 @@ function init() {
                     // значит он пустой. И мы его удалим. Т.к. он открыт, 
                     // то он и есть последний. Его и удаляем путем уменьшения 
                     // длины массива объектов в коллекции
-                    if(myObjectManager.objects.balloon.getData().properties.feedbacks[0] == undefined) {
+                    if (myObjectManager.objects.balloon.getData().properties.feedbacks[0] == undefined) {
                         myObjects.length = myObjects.length - 1;
                     }
 
@@ -319,7 +325,7 @@ function init() {
     if (localStorage.length > 0) {
 
         savedPlacemarks = JSON.parse(localStorage.placemarks).allFeatures;
-
+        
         for (var i = 0; i < savedPlacemarks.length; i++) {
             myObjects.push(savedPlacemarks[i]);
         }
@@ -330,14 +336,15 @@ function init() {
         }
 
         myObjectManager.removeAll().add(collection);
+        // Подменим counter, чтобы новые метки создавались с id с учетом сохраненных в локалСторидж
+        counter = savedPlacemarks.length + 1;
     }
-
-
 
     // Слушаем клик по карте
     myMap.events.add('click', function(e) {
         // Получаем координаты точки на карте, координаты клика
         var coordinates = e.get('coords');
+
         // Ассинхронный запрос координат с помещением их в шапку создаваемой фичи.
         ymaps.geocode(coordinates).then(function(res) {
             var thisAdress = res.geoObjects.get(0).properties.get('name');
